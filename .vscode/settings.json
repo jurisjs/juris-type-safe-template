@@ -1,0 +1,640 @@
+{
+    "json.schemas": [
+        {
+            "fileMatch": ["*.component.js", "*.component.ts"],
+            "schema": {
+                "$schema": "http://json-schema.org/draft-07/schema#",
+                "title": "Juris VDOM Component",
+                "description": "Juris Object VDOM structure with formatting conventions and async support",
+                "type": "object",
+                "properties": {
+                    "div": {"$ref": "#/definitions/DivElement"},
+                    "button": {"$ref": "#/definitions/ButtonElement"},
+                    "p": {"$ref": "#/definitions/TextElement"},
+                    "span": {"$ref": "#/definitions/TextElement"},
+                    "input": {"$ref": "#/definitions/InputElement"},
+                    "textarea": {"$ref": "#/definitions/TextAreaElement"},
+                    "select": {"$ref": "#/definitions/SelectElement"},
+                    "option": {"$ref": "#/definitions/OptionElement"},
+                    "form": {"$ref": "#/definitions/FormElement"},
+                    "fieldset": {"$ref": "#/definitions/FieldSetElement"},
+                    "label": {"$ref": "#/definitions/LabelElement"},
+                    "ul": {"$ref": "#/definitions/ListElement"},
+                    "ol": {"$ref": "#/definitions/ListElement"},
+                    "li": {"$ref": "#/definitions/ListItemElement"},
+                    "img": {"$ref": "#/definitions/ImageElement"},
+                    "video": {"$ref": "#/definitions/VideoElement"},
+                    "audio": {"$ref": "#/definitions/AudioElement"},
+                    "canvas": {"$ref": "#/definitions/CanvasElement"},
+                    "iframe": {"$ref": "#/definitions/IframeElement"},
+                    "a": {"$ref": "#/definitions/LinkElement"},
+                    "h1": {"$ref": "#/definitions/TextElement"},
+                    "h2": {"$ref": "#/definitions/TextElement"},
+                    "h3": {"$ref": "#/definitions/TextElement"},
+                    "h4": {"$ref": "#/definitions/TextElement"},
+                    "h5": {"$ref": "#/definitions/TextElement"},
+                    "h6": {"$ref": "#/definitions/TextElement"},
+                    "table": {"$ref": "#/definitions/TableElement"},
+                    "thead": {"$ref": "#/definitions/ContainerElement"},
+                    "tbody": {"$ref": "#/definitions/ContainerElement"},
+                    "tfoot": {"$ref": "#/definitions/ContainerElement"},
+                    "tr": {"$ref": "#/definitions/TableRowElement"},
+                    "th": {"$ref": "#/definitions/TableHeaderElement"},
+                    "td": {"$ref": "#/definitions/TableCellElement"},
+                    "details": {"$ref": "#/definitions/DetailsElement"},
+                    "summary": {"$ref": "#/definitions/TextElement"},
+                    "dialog": {"$ref": "#/definitions/DialogElement"},
+                    "progress": {"$ref": "#/definitions/ProgressElement"},
+                    "meter": {"$ref": "#/definitions/MeterElement"},
+                    "time": {"$ref": "#/definitions/TimeElement"},
+                    "br": {"$ref": "#/definitions/VoidElement"},
+                    "hr": {"$ref": "#/definitions/VoidElement"}
+                },
+                "definitions": {
+                    "ReactiveValue": {
+                        "description": "Value that can be static, reactive function, or async Promise",
+                        "oneOf": [{"type": "string"}, {"type": "number"}, {"type": "boolean"}, {"type": "array"}, {"type": "object", "description": "Function returning value or Promise<value>"}]
+                    },
+                    "BaseElementProps": {
+                        "type": "object",
+                        "description": "Base properties for all Juris elements. Static & short props should be inline.",
+                        "properties": {
+                            "id": {"$ref": "#/definitions/ReactiveValue", "description": "Element ID (inline if short)"},
+                            "className": {"$ref": "#/definitions/ReactiveValue", "description": "CSS classes (inline if short)"},
+                            "role": {
+                                "oneOf": [
+                                    {
+                                        "type": "string",
+                                        "enum": [
+                                            "alert",
+                                            "alertdialog",
+                                            "application",
+                                            "article",
+                                            "banner",
+                                            "button",
+                                            "cell",
+                                            "checkbox",
+                                            "columnheader",
+                                            "combobox",
+                                            "complementary",
+                                            "contentinfo",
+                                            "definition",
+                                            "dialog",
+                                            "directory",
+                                            "document",
+                                            "feed",
+                                            "figure",
+                                            "form",
+                                            "grid",
+                                            "gridcell",
+                                            "group",
+                                            "heading",
+                                            "img",
+                                            "link",
+                                            "list",
+                                            "listbox",
+                                            "listitem",
+                                            "log",
+                                            "main",
+                                            "marquee",
+                                            "math",
+                                            "menu",
+                                            "menubar",
+                                            "menuitem",
+                                            "menuitemcheckbox",
+                                            "menuitemradio",
+                                            "navigation",
+                                            "none",
+                                            "note",
+                                            "option",
+                                            "presentation",
+                                            "progressbar",
+                                            "radio",
+                                            "radiogroup",
+                                            "region",
+                                            "row",
+                                            "rowgroup",
+                                            "rowheader",
+                                            "scrollbar",
+                                            "search",
+                                            "searchbox",
+                                            "separator",
+                                            "slider",
+                                            "spinbutton",
+                                            "status",
+                                            "switch",
+                                            "tab",
+                                            "table",
+                                            "tablist",
+                                            "tabpanel",
+                                            "textbox",
+                                            "timer",
+                                            "toolbar",
+                                            "tooltip",
+                                            "tree",
+                                            "treegrid",
+                                            "treeitem"
+                                        ]
+                                    },
+                                    {"type": "object", "description": "Reactive role function"}
+                                ],
+                                "description": "ARIA role (inline)"
+                            },
+                            "tabIndex": {"$ref": "#/definitions/ReactiveValue", "description": "Tab index - use function for reactive"},
+                            "hidden": {"$ref": "#/definitions/ReactiveValue", "description": "Hidden state - use function for reactive"},
+                            "title": {"$ref": "#/definitions/ReactiveValue", "description": "Title attribute"},
+                            "lang": {"$ref": "#/definitions/ReactiveValue", "description": "Language code"},
+                            "dir": {"oneOf": [{"type": "string", "enum": ["ltr", "rtl", "auto"]}, {"type": "object"}]},
+                            "draggable": {"$ref": "#/definitions/ReactiveValue"},
+                            "contentEditable": {"oneOf": [{"type": "boolean"}, {"type": "string", "enum": ["true", "false", "inherit"]}, {"type": "object"}]},
+                            "spellcheck": {"$ref": "#/definitions/ReactiveValue"},
+                            "translate": {"oneOf": [{"type": "boolean"}, {"type": "string", "enum": ["yes", "no"]}, {"type": "object"}]},
+
+                            "aria-label": {"$ref": "#/definitions/ReactiveValue", "description": "ARIA label - use function for reactive: () => getState('path')"},
+                            "aria-labelledby": {"$ref": "#/definitions/ReactiveValue"},
+                            "aria-describedby": {"$ref": "#/definitions/ReactiveValue"},
+                            "aria-controls": {"$ref": "#/definitions/ReactiveValue"},
+                            "aria-selected": {"$ref": "#/definitions/ReactiveValue", "description": "Use function for reactive: () => getState('selected')"},
+                            "aria-expanded": {"$ref": "#/definitions/ReactiveValue"},
+                            "aria-pressed": {"$ref": "#/definitions/ReactiveValue"},
+                            "aria-checked": {"$ref": "#/definitions/ReactiveValue"},
+                            "aria-disabled": {"$ref": "#/definitions/ReactiveValue"},
+                            "aria-hidden": {"$ref": "#/definitions/ReactiveValue"},
+                            "aria-live": {"oneOf": [{"type": "string", "enum": ["off", "polite", "assertive"]}, {"type": "object"}]},
+                            "aria-orientation": {"oneOf": [{"type": "string", "enum": ["horizontal", "vertical"]}, {"type": "object"}]},
+                            "aria-current": {"$ref": "#/definitions/ReactiveValue"},
+                            "aria-haspopup": {"oneOf": [{"type": "boolean"}, {"type": "string", "enum": ["false", "true", "menu", "listbox", "tree", "grid", "dialog"]}, {"type": "object"}]},
+                            "aria-level": {"$ref": "#/definitions/ReactiveValue"},
+                            "aria-owns": {"$ref": "#/definitions/ReactiveValue"},
+                            "aria-posinset": {"$ref": "#/definitions/ReactiveValue"},
+                            "aria-setsize": {"$ref": "#/definitions/ReactiveValue"},
+                            "aria-sort": {"oneOf": [{"type": "string", "enum": ["none", "ascending", "descending", "other"]}, {"type": "object"}]},
+                            "aria-valuemax": {"$ref": "#/definitions/ReactiveValue"},
+                            "aria-valuemin": {"$ref": "#/definitions/ReactiveValue"},
+                            "aria-valuenow": {"$ref": "#/definitions/ReactiveValue"},
+                            "aria-valuetext": {"$ref": "#/definitions/ReactiveValue"},
+
+                            "style": {
+                                "oneOf": [
+                                    {"type": "object", "description": "CSS styles object (inline if simple, newline if complex)"},
+                                    {"type": "object", "description": "Function returning styles object"}
+                                ]
+                            },
+
+                            "data-testid": {"$ref": "#/definitions/ReactiveValue"},
+                            "data-id": {"$ref": "#/definitions/ReactiveValue"},
+                            "data-name": {"$ref": "#/definitions/ReactiveValue"},
+                            "data-value": {"$ref": "#/definitions/ReactiveValue"}
+                        }
+                    },
+                    "ReactiveProps": {
+                        "type": "object",
+                        "description": "Properties that should be on new lines with reactive functions",
+                        "properties": {
+                            "text": {"$ref": "#/definitions/ReactiveValue", "description": "NEWLINE: Text content - use () => getState('text') for reactive"},
+                            "children": {
+                                "oneOf": [
+                                    {"type": "array", "items": {"$ref": "#/definitions/ComponentChild"}},
+                                    {"type": "object", "description": "Function returning array of children"}
+                                ],
+                                "description": "NEWLINE: Child elements - use () => [...] for reactive"
+                            },
+                            "innerHTML": {"$ref": "#/definitions/ReactiveValue", "description": "NEWLINE: Inner HTML - use () => getState('html') for reactive"},
+                            "value": {"$ref": "#/definitions/ReactiveValue", "description": "NEWLINE: Input value - use () => getState('inputValue') for reactive"},
+                            "checked": {"$ref": "#/definitions/ReactiveValue", "description": "NEWLINE: Checkbox state - use () => getState('isChecked') for reactive"},
+                            "disabled": {"$ref": "#/definitions/ReactiveValue", "description": "NEWLINE: Disabled state - use () => getState('isDisabled') for reactive"},
+                            "readonly": {"$ref": "#/definitions/ReactiveValue", "description": "NEWLINE: Readonly state"},
+                            "required": {"$ref": "#/definitions/ReactiveValue", "description": "NEWLINE: Required state"},
+                            "src": {"$ref": "#/definitions/ReactiveValue", "description": "NEWLINE: Image/media source - use () => getState('imageSrc') for reactive"},
+                            "href": {"$ref": "#/definitions/ReactiveValue", "description": "NEWLINE: Link URL - use () => getState('url') for reactive"},
+                            "alt": {"$ref": "#/definitions/ReactiveValue", "description": "NEWLINE: Alt text for images"},
+                            "placeholder": {"$ref": "#/definitions/ReactiveValue", "description": "NEWLINE: Placeholder text"},
+                            "open": {"$ref": "#/definitions/ReactiveValue", "description": "NEWLINE: Open state for details/dialog"}
+                        }
+                    },
+                    "EventHandlers": {
+                        "type": "object",
+                        "description": "Event handlers - always on new lines, support async",
+                        "properties": {
+                            "onClick": {"type": "object", "description": "NEWLINE: Click handler - async (e) => { await handleClick(); }"},
+                            "onDoubleClick": {"type": "object", "description": "NEWLINE: Double click handler"},
+                            "onMouseDown": {"type": "object", "description": "NEWLINE: Mouse down handler"},
+                            "onMouseUp": {"type": "object", "description": "NEWLINE: Mouse up handler"},
+                            "onMouseOver": {"type": "object", "description": "NEWLINE: Mouse over handler"},
+                            "onMouseOut": {"type": "object", "description": "NEWLINE: Mouse out handler"},
+                            "onMouseMove": {"type": "object", "description": "NEWLINE: Mouse move handler"},
+                            "onMouseEnter": {"type": "object", "description": "NEWLINE: Mouse enter handler"},
+                            "onMouseLeave": {"type": "object", "description": "NEWLINE: Mouse leave handler"},
+                            "onContextMenu": {"type": "object", "description": "NEWLINE: Context menu handler"},
+
+                            "onKeyDown": {"type": "object", "description": "NEWLINE: Key down handler"},
+                            "onKeyUp": {"type": "object", "description": "NEWLINE: Key up handler"},
+                            "onKeyPress": {"type": "object", "description": "NEWLINE: Key press handler"},
+
+                            "onFocus": {"type": "object", "description": "NEWLINE: Focus handler"},
+                            "onBlur": {"type": "object", "description": "NEWLINE: Blur handler"},
+                            "onFocusIn": {"type": "object", "description": "NEWLINE: Focus in handler"},
+                            "onFocusOut": {"type": "object", "description": "NEWLINE: Focus out handler"},
+
+                            "onInput": {"type": "object", "description": "NEWLINE: Input handler - async (e) => { await setState('value', e.target.value); }"},
+                            "onChange": {"type": "object", "description": "NEWLINE: Change handler"},
+                            "onSelect": {"type": "object", "description": "NEWLINE: Select handler"},
+                            "onInvalid": {"type": "object", "description": "NEWLINE: Invalid handler"},
+
+                            "onSubmit": {"type": "object", "description": "NEWLINE: Form submit handler"},
+                            "onReset": {"type": "object", "description": "NEWLINE: Form reset handler"},
+
+                            "onLoad": {"type": "object", "description": "NEWLINE: Load handler"},
+                            "onError": {"type": "object", "description": "NEWLINE: Error handler"},
+                            "onResize": {"type": "object", "description": "NEWLINE: Resize handler"},
+                            "onScroll": {"type": "object", "description": "NEWLINE: Scroll handler"},
+
+                            "onDragStart": {"type": "object", "description": "NEWLINE: Drag start handler"},
+                            "onDrag": {"type": "object", "description": "NEWLINE: Drag handler"},
+                            "onDragEnd": {"type": "object", "description": "NEWLINE: Drag end handler"},
+                            "onDragEnter": {"type": "object", "description": "NEWLINE: Drag enter handler"},
+                            "onDragLeave": {"type": "object", "description": "NEWLINE: Drag leave handler"},
+                            "onDragOver": {"type": "object", "description": "NEWLINE: Drag over handler"},
+                            "onDrop": {"type": "object", "description": "NEWLINE: Drop handler"},
+
+                            "onTouchStart": {"type": "object", "description": "NEWLINE: Touch start handler"},
+                            "onTouchMove": {"type": "object", "description": "NEWLINE: Touch move handler"},
+                            "onTouchEnd": {"type": "object", "description": "NEWLINE: Touch end handler"},
+                            "onTouchCancel": {"type": "object", "description": "NEWLINE: Touch cancel handler"},
+
+                            "onToggle": {"type": "object", "description": "NEWLINE: Toggle handler for details"},
+                            "onClose": {"type": "object", "description": "NEWLINE: Close handler for dialog"},
+                            "onCancel": {"type": "object", "description": "NEWLINE: Cancel handler for dialog"},
+
+                            "onPlay": {"type": "object", "description": "NEWLINE: Media play handler"},
+                            "onPause": {"type": "object", "description": "NEWLINE: Media pause handler"},
+                            "onEnded": {"type": "object", "description": "NEWLINE: Media ended handler"},
+                            "onTimeUpdate": {"type": "object", "description": "NEWLINE: Media time update handler"},
+                            "onVolumeChange": {"type": "object", "description": "NEWLINE: Media volume change handler"},
+                            "onLoadedData": {"type": "object", "description": "NEWLINE: Media loaded data handler"},
+                            "onLoadedMetadata": {"type": "object", "description": "NEWLINE: Media loaded metadata handler"},
+                            "onCanPlay": {"type": "object", "description": "NEWLINE: Media can play handler"},
+                            "onCanPlayThrough": {"type": "object", "description": "NEWLINE: Media can play through handler"}
+                        }
+                    },
+                    "VoidElement": {
+                        "allOf": [{"$ref": "#/definitions/BaseElementProps"}],
+                        "description": "Void elements (br, hr) - self-closing, no children"
+                    },
+                    "ContainerElement": {
+                        "allOf": [{"$ref": "#/definitions/BaseElementProps"}, {"$ref": "#/definitions/ReactiveProps"}, {"$ref": "#/definitions/EventHandlers"}],
+                        "description": "Container elements - can have children or innerHTML"
+                    },
+                    "DivElement": {
+                        "allOf": [{"$ref": "#/definitions/ContainerElement"}],
+                        "description": "Div container - add //div.className comment at closing brace"
+                    },
+                    "ButtonElement": {
+                        "allOf": [{"$ref": "#/definitions/ContainerElement"}],
+                        "properties": {
+                            "type": {
+                                "oneOf": [
+                                    {"type": "string", "enum": ["button", "submit", "reset"]},
+                                    {"type": "object", "description": "Reactive button type"}
+                                ],
+                                "description": "Button type (inline)"
+                            },
+                            "name": {"$ref": "#/definitions/ReactiveValue"},
+                            "form": {"$ref": "#/definitions/ReactiveValue"},
+                            "formAction": {"$ref": "#/definitions/ReactiveValue"},
+                            "formEncType": {"$ref": "#/definitions/ReactiveValue"},
+                            "formMethod": {"oneOf": [{"type": "string", "enum": ["get", "post"]}, {"type": "object"}]},
+                            "formNoValidate": {"$ref": "#/definitions/ReactiveValue"},
+                            "formTarget": {"$ref": "#/definitions/ReactiveValue"},
+                            "autofocus": {"$ref": "#/definitions/ReactiveValue"}
+                        },
+                        "description": "Button element - add //button comment at closing brace"
+                    },
+                    "InputElement": {
+                        "allOf": [{"$ref": "#/definitions/BaseElementProps"}, {"$ref": "#/definitions/ReactiveProps"}, {"$ref": "#/definitions/EventHandlers"}],
+                        "properties": {
+                            "type": {
+                                "oneOf": [
+                                    {
+                                        "type": "string",
+                                        "enum": [
+                                            "text",
+                                            "email",
+                                            "password",
+                                            "number",
+                                            "tel",
+                                            "url",
+                                            "search",
+                                            "date",
+                                            "time",
+                                            "datetime-local",
+                                            "month",
+                                            "week",
+                                            "color",
+                                            "file",
+                                            "range",
+                                            "checkbox",
+                                            "radio",
+                                            "submit",
+                                            "reset",
+                                            "button",
+                                            "hidden"
+                                        ]
+                                    },
+                                    {"type": "object", "description": "Reactive input type"}
+                                ],
+                                "description": "Input type (inline)"
+                            },
+                            "defaultValue": {"$ref": "#/definitions/ReactiveValue"},
+                            "name": {"$ref": "#/definitions/ReactiveValue"},
+                            "min": {"$ref": "#/definitions/ReactiveValue"},
+                            "max": {"$ref": "#/definitions/ReactiveValue"},
+                            "step": {"$ref": "#/definitions/ReactiveValue"},
+                            "pattern": {"$ref": "#/definitions/ReactiveValue"},
+                            "size": {"$ref": "#/definitions/ReactiveValue"},
+                            "maxLength": {"$ref": "#/definitions/ReactiveValue"},
+                            "minLength": {"$ref": "#/definitions/ReactiveValue"},
+                            "multiple": {"$ref": "#/definitions/ReactiveValue"},
+                            "accept": {"$ref": "#/definitions/ReactiveValue"},
+                            "autocomplete": {"$ref": "#/definitions/ReactiveValue"},
+                            "autofocus": {"$ref": "#/definitions/ReactiveValue"},
+                            "form": {"$ref": "#/definitions/ReactiveValue"},
+                            "list": {"$ref": "#/definitions/ReactiveValue"}
+                        },
+                        "description": "Input element - add //input comment at closing brace"
+                    },
+                    "TextAreaElement": {
+                        "allOf": [{"$ref": "#/definitions/BaseElementProps"}, {"$ref": "#/definitions/ReactiveProps"}, {"$ref": "#/definitions/EventHandlers"}],
+                        "properties": {
+                            "defaultValue": {"$ref": "#/definitions/ReactiveValue"},
+                            "name": {"$ref": "#/definitions/ReactiveValue"},
+                            "rows": {"$ref": "#/definitions/ReactiveValue"},
+                            "cols": {"$ref": "#/definitions/ReactiveValue"},
+                            "maxLength": {"$ref": "#/definitions/ReactiveValue"},
+                            "minLength": {"$ref": "#/definitions/ReactiveValue"},
+                            "wrap": {"oneOf": [{"type": "string", "enum": ["hard", "soft", "off"]}, {"type": "object"}]},
+                            "autofocus": {"$ref": "#/definitions/ReactiveValue"},
+                            "form": {"$ref": "#/definitions/ReactiveValue"}
+                        },
+                        "description": "TextArea element - add //textarea comment at closing brace"
+                    },
+                    "SelectElement": {
+                        "allOf": [{"$ref": "#/definitions/BaseElementProps"}, {"$ref": "#/definitions/ReactiveProps"}, {"$ref": "#/definitions/EventHandlers"}],
+                        "properties": {
+                            "defaultValue": {"$ref": "#/definitions/ReactiveValue"},
+                            "name": {"$ref": "#/definitions/ReactiveValue"},
+                            "multiple": {"$ref": "#/definitions/ReactiveValue"},
+                            "size": {"$ref": "#/definitions/ReactiveValue"},
+                            "autofocus": {"$ref": "#/definitions/ReactiveValue"},
+                            "form": {"$ref": "#/definitions/ReactiveValue"}
+                        },
+                        "description": "Select element - add //select comment at closing brace"
+                    },
+                    "OptionElement": {
+                        "allOf": [{"$ref": "#/definitions/BaseElementProps"}, {"$ref": "#/definitions/ReactiveProps"}, {"$ref": "#/definitions/EventHandlers"}],
+                        "properties": {
+                            "selected": {"$ref": "#/definitions/ReactiveValue"},
+                            "label": {"$ref": "#/definitions/ReactiveValue"}
+                        },
+                        "description": "Option element - add //option comment at closing brace"
+                    },
+                    "LabelElement": {
+                        "allOf": [{"$ref": "#/definitions/ContainerElement"}],
+                        "properties": {
+                            "htmlFor": {"$ref": "#/definitions/ReactiveValue"},
+                            "form": {"$ref": "#/definitions/ReactiveValue"}
+                        },
+                        "description": "Label element - add //label comment at closing brace"
+                    },
+                    "FieldSetElement": {
+                        "allOf": [{"$ref": "#/definitions/ContainerElement"}],
+                        "properties": {
+                            "name": {"$ref": "#/definitions/ReactiveValue"},
+                            "form": {"$ref": "#/definitions/ReactiveValue"}
+                        },
+                        "description": "FieldSet element - add //fieldset comment at closing brace"
+                    },
+                    "TextElement": {
+                        "allOf": [{"$ref": "#/definitions/BaseElementProps"}, {"$ref": "#/definitions/ReactiveProps"}, {"$ref": "#/definitions/EventHandlers"}],
+                        "description": "Text elements (p, h1-h6, span) - add //tagName comment at closing brace"
+                    },
+                    "FormElement": {
+                        "allOf": [{"$ref": "#/definitions/ContainerElement"}],
+                        "properties": {
+                            "action": {"$ref": "#/definitions/ReactiveValue"},
+                            "method": {"oneOf": [{"type": "string", "enum": ["get", "post"]}, {"type": "object"}]},
+                            "encType": {"oneOf": [{"type": "string", "enum": ["application/x-www-form-urlencoded", "multipart/form-data", "text/plain"]}, {"type": "object"}]},
+                            "target": {"oneOf": [{"type": "string", "enum": ["_blank", "_self", "_parent", "_top"]}, {"type": "string"}, {"type": "object"}]},
+                            "noValidate": {"$ref": "#/definitions/ReactiveValue"},
+                            "acceptCharset": {"$ref": "#/definitions/ReactiveValue"},
+                            "autocomplete": {"oneOf": [{"type": "string", "enum": ["on", "off"]}, {"type": "object"}]},
+                            "name": {"$ref": "#/definitions/ReactiveValue"}
+                        },
+                        "description": "Form element - add //form comment at closing brace"
+                    },
+                    "ListElement": {
+                        "allOf": [{"$ref": "#/definitions/ContainerElement"}],
+                        "properties": {
+                            "type": {"oneOf": [{"type": "string", "enum": ["1", "a", "A", "i", "I"]}, {"type": "object"}]},
+                            "start": {"$ref": "#/definitions/ReactiveValue"},
+                            "reversed": {"$ref": "#/definitions/ReactiveValue"}
+                        },
+                        "description": "List elements (ul, ol) - add //ul or //ol comment at closing brace"
+                    },
+                    "ListItemElement": {
+                        "allOf": [{"$ref": "#/definitions/ContainerElement"}],
+                        "properties": {
+                            "value": {"$ref": "#/definitions/ReactiveValue", "description": "List item value for ordered lists"}
+                        },
+                        "description": "List item (li) - add //li comment at closing brace"
+                    },
+                    "ImageElement": {
+                        "allOf": [{"$ref": "#/definitions/BaseElementProps"}, {"$ref": "#/definitions/ReactiveProps"}, {"$ref": "#/definitions/EventHandlers"}],
+                        "properties": {
+                            "width": {"$ref": "#/definitions/ReactiveValue"},
+                            "height": {"$ref": "#/definitions/ReactiveValue"},
+                            "loading": {"oneOf": [{"type": "string", "enum": ["lazy", "eager"]}, {"type": "object"}]},
+                            "decoding": {"oneOf": [{"type": "string", "enum": ["sync", "async", "auto"]}, {"type": "object"}]},
+                            "crossOrigin": {"oneOf": [{"type": "string", "enum": ["anonymous", "use-credentials"]}, {"type": "object"}]},
+                            "isMap": {"$ref": "#/definitions/ReactiveValue"},
+                            "useMap": {"$ref": "#/definitions/ReactiveValue"},
+                            "sizes": {"$ref": "#/definitions/ReactiveValue"},
+                            "srcSet": {"$ref": "#/definitions/ReactiveValue"},
+                            "referrerPolicy": {"$ref": "#/definitions/ReactiveValue"}
+                        },
+                        "description": "Image element - add //img comment at closing brace"
+                    },
+                    "VideoElement": {
+                        "allOf": [{"$ref": "#/definitions/BaseElementProps"}, {"$ref": "#/definitions/ReactiveProps"}, {"$ref": "#/definitions/EventHandlers"}],
+                        "properties": {
+                            "controls": {"$ref": "#/definitions/ReactiveValue"},
+                            "autoplay": {"$ref": "#/definitions/ReactiveValue"},
+                            "loop": {"$ref": "#/definitions/ReactiveValue"},
+                            "muted": {"$ref": "#/definitions/ReactiveValue"},
+                            "width": {"$ref": "#/definitions/ReactiveValue"},
+                            "height": {"$ref": "#/definitions/ReactiveValue"},
+                            "poster": {"$ref": "#/definitions/ReactiveValue"},
+                            "preload": {"oneOf": [{"type": "string", "enum": ["none", "metadata", "auto"]}, {"type": "object"}]},
+                            "crossOrigin": {"oneOf": [{"type": "string", "enum": ["anonymous", "use-credentials"]}, {"type": "object"}]}
+                        },
+                        "description": "Video element - add //video comment at closing brace"
+                    },
+                    "AudioElement": {
+                        "allOf": [{"$ref": "#/definitions/BaseElementProps"}, {"$ref": "#/definitions/ReactiveProps"}, {"$ref": "#/definitions/EventHandlers"}],
+                        "properties": {
+                            "controls": {"$ref": "#/definitions/ReactiveValue"},
+                            "autoplay": {"$ref": "#/definitions/ReactiveValue"},
+                            "loop": {"$ref": "#/definitions/ReactiveValue"},
+                            "muted": {"$ref": "#/definitions/ReactiveValue"},
+                            "preload": {"oneOf": [{"type": "string", "enum": ["none", "metadata", "auto"]}, {"type": "object"}]},
+                            "crossOrigin": {"oneOf": [{"type": "string", "enum": ["anonymous", "use-credentials"]}, {"type": "object"}]}
+                        },
+                        "description": "Audio element - add //audio comment at closing brace"
+                    },
+                    "CanvasElement": {
+                        "allOf": [{"$ref": "#/definitions/BaseElementProps"}, {"$ref": "#/definitions/EventHandlers"}],
+                        "properties": {
+                            "width": {"$ref": "#/definitions/ReactiveValue"},
+                            "height": {"$ref": "#/definitions/ReactiveValue"}
+                        },
+                        "description": "Canvas element - add //canvas comment at closing brace"
+                    },
+                    "IframeElement": {
+                        "allOf": [{"$ref": "#/definitions/BaseElementProps"}, {"$ref": "#/definitions/ReactiveProps"}, {"$ref": "#/definitions/EventHandlers"}],
+                        "properties": {
+                            "width": {"$ref": "#/definitions/ReactiveValue"},
+                            "height": {"$ref": "#/definitions/ReactiveValue"},
+                            "name": {"$ref": "#/definitions/ReactiveValue"},
+                            "sandbox": {"$ref": "#/definitions/ReactiveValue"},
+                            "allow": {"$ref": "#/definitions/ReactiveValue"},
+                            "allowFullscreen": {"$ref": "#/definitions/ReactiveValue"},
+                            "loading": {"oneOf": [{"type": "string", "enum": ["lazy", "eager"]}, {"type": "object"}]},
+                            "referrerPolicy": {"$ref": "#/definitions/ReactiveValue"},
+                            "srcdoc": {"$ref": "#/definitions/ReactiveValue"}
+                        },
+                        "description": "Iframe element - add //iframe comment at closing brace"
+                    },
+                    "LinkElement": {
+                        "allOf": [{"$ref": "#/definitions/ContainerElement"}],
+                        "properties": {
+                            "target": {"oneOf": [{"type": "string", "enum": ["_blank", "_self", "_parent", "_top"]}, {"type": "string"}, {"type": "object"}]},
+                            "rel": {"$ref": "#/definitions/ReactiveValue"},
+                            "download": {"$ref": "#/definitions/ReactiveValue"},
+                            "hreflang": {"$ref": "#/definitions/ReactiveValue"},
+                            "type": {"$ref": "#/definitions/ReactiveValue"},
+                            "referrerPolicy": {"$ref": "#/definitions/ReactiveValue"}
+                        },
+                        "description": "Link element - add //a comment at closing brace"
+                    },
+                    "TableElement": {
+                        "allOf": [{"$ref": "#/definitions/ContainerElement"}],
+                        "description": "Table element - add //table comment at closing brace"
+                    },
+                    "TableRowElement": {
+                        "allOf": [{"$ref": "#/definitions/ContainerElement"}],
+                        "description": "Table row element - add //tr comment at closing brace"
+                    },
+                    "TableCellElement": {
+                        "allOf": [{"$ref": "#/definitions/ContainerElement"}],
+                        "properties": {
+                            "colspan": {"$ref": "#/definitions/ReactiveValue"},
+                            "rowspan": {"$ref": "#/definitions/ReactiveValue"},
+                            "headers": {"$ref": "#/definitions/ReactiveValue"},
+                            "scope": {"oneOf": [{"type": "string", "enum": ["row", "col", "rowgroup", "colgroup"]}, {"type": "object"}]},
+                            "abbr": {"$ref": "#/definitions/ReactiveValue"}
+                        },
+                        "description": "Table cell element (td) - add //td comment at closing brace"
+                    },
+                    "TableHeaderElement": {
+                        "allOf": [{"$ref": "#/definitions/TableCellElement"}],
+                        "properties": {
+                            "sorted": {"oneOf": [{"type": "string", "enum": ["ascending", "descending", "none", "other"]}, {"type": "object"}]}
+                        },
+                        "description": "Table header element (th) - add //th comment at closing brace"
+                    },
+                    "DetailsElement": {
+                        "allOf": [{"$ref": "#/definitions/ContainerElement"}],
+                        "description": "Details element - add //details comment at closing brace"
+                    },
+                    "DialogElement": {
+                        "allOf": [{"$ref": "#/definitions/ContainerElement"}],
+                        "description": "Dialog element - add //dialog comment at closing brace"
+                    },
+                    "ProgressElement": {
+                        "allOf": [{"$ref": "#/definitions/BaseElementProps"}, {"$ref": "#/definitions/EventHandlers"}],
+                        "properties": {
+                            "value": {"$ref": "#/definitions/ReactiveValue"},
+                            "max": {"$ref": "#/definitions/ReactiveValue"}
+                        },
+                        "description": "Progress element - add //progress comment at closing brace"
+                    },
+                    "MeterElement": {
+                        "allOf": [{"$ref": "#/definitions/BaseElementProps"}, {"$ref": "#/definitions/EventHandlers"}],
+                        "properties": {
+                            "value": {"$ref": "#/definitions/ReactiveValue"},
+                            "min": {"$ref": "#/definitions/ReactiveValue"},
+                            "max": {"$ref": "#/definitions/ReactiveValue"},
+                            "low": {"$ref": "#/definitions/ReactiveValue"},
+                            "high": {"$ref": "#/definitions/ReactiveValue"},
+                            "optimum": {"$ref": "#/definitions/ReactiveValue"},
+                            "form": {"$ref": "#/definitions/ReactiveValue"}
+                        },
+                        "description": "Meter element - add //meter comment at closing brace"
+                    },
+                    "TimeElement": {
+                        "allOf": [{"$ref": "#/definitions/ContainerElement"}],
+                        "properties": {
+                            "dateTime": {"$ref": "#/definitions/ReactiveValue"}
+                        },
+                        "description": "Time element - add //time comment at closing brace"
+                    },
+                    "ComponentChild": {
+                        "oneOf": [
+                            {"type": "object", "properties": {"div": {"$ref": "#/definitions/DivElement"}}, "additionalProperties": false},
+                            {"type": "object", "properties": {"button": {"$ref": "#/definitions/ButtonElement"}}, "additionalProperties": false},
+                            {"type": "object", "properties": {"p": {"$ref": "#/definitions/TextElement"}}, "additionalProperties": false},
+                            {"type": "object", "properties": {"span": {"$ref": "#/definitions/TextElement"}}, "additionalProperties": false},
+                            {"type": "object", "properties": {"input": {"$ref": "#/definitions/InputElement"}}, "additionalProperties": false},
+                            {"type": "object", "properties": {"textarea": {"$ref": "#/definitions/TextAreaElement"}}, "additionalProperties": false},
+                            {"type": "object", "properties": {"select": {"$ref": "#/definitions/SelectElement"}}, "additionalProperties": false},
+                            {"type": "object", "properties": {"option": {"$ref": "#/definitions/OptionElement"}}, "additionalProperties": false},
+                            {"type": "object", "properties": {"form": {"$ref": "#/definitions/FormElement"}}, "additionalProperties": false},
+                            {"type": "object", "properties": {"fieldset": {"$ref": "#/definitions/FieldSetElement"}}, "additionalProperties": false},
+                            {"type": "object", "properties": {"label": {"$ref": "#/definitions/LabelElement"}}, "additionalProperties": false},
+                            {"type": "object", "properties": {"ul": {"$ref": "#/definitions/ListElement"}}, "additionalProperties": false},
+                            {"type": "object", "properties": {"ol": {"$ref": "#/definitions/ListElement"}}, "additionalProperties": false},
+                            {"type": "object", "properties": {"li": {"$ref": "#/definitions/ListItemElement"}}, "additionalProperties": false},
+                            {"type": "object", "properties": {"img": {"$ref": "#/definitions/ImageElement"}}, "additionalProperties": false},
+                            {"type": "object", "properties": {"video": {"$ref": "#/definitions/VideoElement"}}, "additionalProperties": false},
+                            {"type": "object", "properties": {"audio": {"$ref": "#/definitions/AudioElement"}}, "additionalProperties": false},
+                            {"type": "object", "properties": {"canvas": {"$ref": "#/definitions/CanvasElement"}}, "additionalProperties": false},
+                            {"type": "object", "properties": {"iframe": {"$ref": "#/definitions/IframeElement"}}, "additionalProperties": false},
+                            {"type": "object", "properties": {"a": {"$ref": "#/definitions/LinkElement"}}, "additionalProperties": false},
+                            {"type": "object", "properties": {"h1": {"$ref": "#/definitions/TextElement"}}, "additionalProperties": false},
+                            {"type": "object", "properties": {"h2": {"$ref": "#/definitions/TextElement"}}, "additionalProperties": false},
+                            {"type": "object", "properties": {"h3": {"$ref": "#/definitions/TextElement"}}, "additionalProperties": false},
+                            {"type": "object", "properties": {"h4": {"$ref": "#/definitions/TextElement"}}, "additionalProperties": false},
+                            {"type": "object", "properties": {"h5": {"$ref": "#/definitions/TextElement"}}, "additionalProperties": false},
+                            {"type": "object", "properties": {"h6": {"$ref": "#/definitions/TextElement"}}, "additionalProperties": false},
+                            {"type": "object", "properties": {"table": {"$ref": "#/definitions/TableElement"}}, "additionalProperties": false},
+                            {"type": "object", "properties": {"thead": {"$ref": "#/definitions/ContainerElement"}}, "additionalProperties": false},
+                            {"type": "object", "properties": {"tbody": {"$ref": "#/definitions/ContainerElement"}}, "additionalProperties": false},
+                            {"type": "object", "properties": {"tfoot": {"$ref": "#/definitions/ContainerElement"}}, "additionalProperties": false},
+                            {"type": "object", "properties": {"tr": {"$ref": "#/definitions/TableRowElement"}}, "additionalProperties": false},
+                            {"type": "object", "properties": {"th": {"$ref": "#/definitions/TableHeaderElement"}}, "additionalProperties": false},
+                            {"type": "object", "properties": {"td": {"$ref": "#/definitions/TableCellElement"}}, "additionalProperties": false},
+                            {"type": "object", "properties": {"details": {"$ref": "#/definitions/DetailsElement"}}, "additionalProperties": false},
+                            {"type": "object", "properties": {"summary": {"$ref": "#/definitions/TextElement"}}, "additionalProperties": false},
+                            {"type": "object", "properties": {"dialog": {"$ref": "#/definitions/DialogElement"}}, "additionalProperties": false},
+                            {"type": "object", "properties": {"progress": {"$ref": "#/definitions/ProgressElement"}}, "additionalProperties": false},
+                            {"type": "object", "properties": {"meter": {"$ref": "#/definitions/MeterElement"}}, "additionalProperties": false},
+                            {"type": "object", "properties": {"time": {"$ref": "#/definitions/TimeElement"}}, "additionalProperties": false},
+                            {"type": "object", "properties": {"br": {"$ref": "#/definitions/VoidElement"}}, "additionalProperties": false},
+                            {"type": "object", "properties": {"hr": {"$ref": "#/definitions/VoidElement"}}, "additionalProperties": false}
+                        ]
+                    }
+                }
+            }
+        }
+    ]
+}

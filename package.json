@@ -1,0 +1,6 @@
+{
+  "imports": {
+    "#types": "./types/index.d.ts",
+    "#types/*": "./types/*"
+  }
+}
