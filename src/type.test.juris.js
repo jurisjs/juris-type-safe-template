@@ -25,7 +25,7 @@ export const ComprehensiveApp = (props, context) => {
 											theme: getState('app.theme', 'light')
 										},
 										children: [
-											{ RouterOutlet: { props: {} } }
+											{ RouterOutlet: {} }
 										]
 									}
 								},

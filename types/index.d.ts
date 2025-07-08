@@ -34,7 +34,7 @@ type SmartEventHandler<E = Event> = ((event: E) => void | Promise<void>);
 type ReactiveValue<T> = T | (() => AsyncCapable<T>) | Promise<T>;
 
 type ComponentRegistrationError<T extends string> = 
-  `❌ Component '${T}' not registered. Add to app.d.ts RegisteredComponents interface.`;
+  `❌ Component '${T}' not registered. Add to app.component.d.ts RegisteredComponents interface.`;
 
 // Custom event types for better type safety
 export interface JurisInputEvent extends Event {
@@ -963,7 +963,7 @@ type RegisteredComponentElements = keyof Juris.RegisteredComponents extends neve
         [P in K]: ComponentElement & Juris.RegisteredComponents[K]
       }
     }[keyof Juris.RegisteredComponents];
-    
+
 export type ValidateComponent<T> = ValidateComponentElement<T>;
 export type ComponentValidationError<T extends string> = ComponentRegistrationError<T>;
 

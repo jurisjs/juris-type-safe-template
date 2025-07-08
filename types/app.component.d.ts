@@ -15,12 +15,12 @@ declare global {
       // 1. LAYOUT & ROUTING COMPONENTS
       LayoutManager: { 
         props: { 
-          layouts: { [layoutName: string]: JurisVDOMElement } 
+          layouts: { [layoutName: string]: ComponentElement }
         } 
       };
       
       DashboardLayout: { 
-        props?: {
+        props: {
           sidebar?: boolean;
           theme?: 'light' | 'dark';
         }
