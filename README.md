@@ -65,7 +65,7 @@ your-app/
 
 ### 1. Register Your Components
 
-First, define your components in `types/app.d.ts`:
+First, define your components in `types/app.component.d.ts`:
 
 ```typescript
 declare global {
