@@ -100,8 +100,8 @@ declare global {
  *   theme?: 'light' | 'dark',
  *   onEdit?: (user: any) => void
  * }} props
- * @param {import('./types').JurisContext} context
- * @returns {import('./types').JurisVDOMElement}
+ * @param {import('@types').JurisContext} context
+ * @returns {import('@types').JurisVDOMElement}
  */
 export const UserCard = (props, context) => {
     const {user, theme = 'light', onEdit} = props;
