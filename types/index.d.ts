@@ -191,6 +191,936 @@ export interface EnhancementDefinition {
 export type EnhancementFunction = (context: JurisContext) => EnhancementDefinition;
 export type Enhancement = EnhancementDefinition | EnhancementFunction;
 
+// Transform sub-properties (Complete)
+interface TransformProperties {
+  transform?: ReactiveValue<string>;
+  transformOrigin?: ReactiveValue<string>;
+  transformStyle?: ReactiveValue<'flat' | 'preserve-3d'>;
+  transformBox?: ReactiveValue<'content-box' | 'border-box' | 'fill-box' | 'stroke-box' | 'view-box'>;
+  
+  // Individual transform functions
+  translateX?: ReactiveValue<string | number>;
+  translateY?: ReactiveValue<string | number>;
+  translateZ?: ReactiveValue<string | number>;
+  translate3d?: ReactiveValue<string>;
+  scaleX?: ReactiveValue<number>;
+  scaleY?: ReactiveValue<number>;
+  scaleZ?: ReactiveValue<number>;
+  scale?: ReactiveValue<number | string>;
+  scale3d?: ReactiveValue<string>;
+  rotateX?: ReactiveValue<string | number>;
+  rotateY?: ReactiveValue<string | number>;
+  rotateZ?: ReactiveValue<string | number>;
+  rotate?: ReactiveValue<string | number>;
+  rotate3d?: ReactiveValue<string>;
+  skewX?: ReactiveValue<string | number>;
+  skewY?: ReactiveValue<string | number>;
+  skew?: ReactiveValue<string>;
+  perspective?: ReactiveValue<string | number>;
+  perspectiveOrigin?: ReactiveValue<string>;
+  matrix?: ReactiveValue<string>;
+  matrix3d?: ReactiveValue<string>;
+  backfaceVisibility?: ReactiveValue<'visible' | 'hidden'>;
+}
+
+// Background sub-properties (Complete)
+interface BackgroundProperties {
+  background?: ReactiveValue<string>;
+  backgroundImage?: ReactiveValue<string>;
+  backgroundPosition?: ReactiveValue<string>;
+  backgroundPositionX?: ReactiveValue<string>;
+  backgroundPositionY?: ReactiveValue<string>;
+  backgroundSize?: ReactiveValue<'auto' | 'cover' | 'contain' | string>;
+  backgroundRepeat?: ReactiveValue<'repeat' | 'no-repeat' | 'repeat-x' | 'repeat-y' | 'space' | 'round'>;
+  backgroundAttachment?: ReactiveValue<'scroll' | 'fixed' | 'local'>;
+  backgroundClip?: ReactiveValue<'border-box' | 'padding-box' | 'content-box' | 'text'>;
+  backgroundOrigin?: ReactiveValue<'border-box' | 'padding-box' | 'content-box'>;
+  backgroundBlendMode?: ReactiveValue<'normal' | 'multiply' | 'screen' | 'overlay' | 'darken' | 'lighten' | 'color-dodge' | 'color-burn' | 'hard-light' | 'soft-light' | 'difference' | 'exclusion' | 'hue' | 'saturation' | 'color' | 'luminosity'>;
+  backgroundColor?: ReactiveValue<string>;
+}
+
+// Border sub-properties (Complete)
+interface BorderProperties {
+  border?: ReactiveValue<string>;
+  borderWidth?: ReactiveValue<string | number>;
+  borderStyle?: ReactiveValue<'none' | 'solid' | 'dashed' | 'dotted' | 'double' | 'groove' | 'ridge' | 'inset' | 'outset'>;
+  borderColor?: ReactiveValue<string>;
+  
+  // Individual sides
+  borderTop?: ReactiveValue<string>;
+  borderRight?: ReactiveValue<string>;
+  borderBottom?: ReactiveValue<string>;
+  borderLeft?: ReactiveValue<string>;
+  
+  borderTopWidth?: ReactiveValue<string | number>;
+  borderRightWidth?: ReactiveValue<string | number>;
+  borderBottomWidth?: ReactiveValue<string | number>;
+  borderLeftWidth?: ReactiveValue<string | number>;
+  
+  borderTopStyle?: ReactiveValue<'none' | 'solid' | 'dashed' | 'dotted' | 'double' | 'groove' | 'ridge' | 'inset' | 'outset'>;
+  borderRightStyle?: ReactiveValue<'none' | 'solid' | 'dashed' | 'dotted' | 'double' | 'groove' | 'ridge' | 'inset' | 'outset'>;
+  borderBottomStyle?: ReactiveValue<'none' | 'solid' | 'dashed' | 'dotted' | 'double' | 'groove' | 'ridge' | 'inset' | 'outset'>;
+  borderLeftStyle?: ReactiveValue<'none' | 'solid' | 'dashed' | 'dotted' | 'double' | 'groove' | 'ridge' | 'inset' | 'outset'>;
+  
+  borderTopColor?: ReactiveValue<string>;
+  borderRightColor?: ReactiveValue<string>;
+  borderBottomColor?: ReactiveValue<string>;
+  borderLeftColor?: ReactiveValue<string>;
+  
+  // Border radius
+  borderRadius?: ReactiveValue<string | number>;
+  borderTopLeftRadius?: ReactiveValue<string | number>;
+  borderTopRightRadius?: ReactiveValue<string | number>;
+  borderBottomLeftRadius?: ReactiveValue<string | number>;
+  borderBottomRightRadius?: ReactiveValue<string | number>;
+  
+  // Border image
+  borderImage?: ReactiveValue<string>;
+  borderImageSource?: ReactiveValue<string>;
+  borderImageSlice?: ReactiveValue<string | number>;
+  borderImageWidth?: ReactiveValue<string | number>;
+  borderImageOutset?: ReactiveValue<string | number>;
+  borderImageRepeat?: ReactiveValue<'stretch' | 'repeat' | 'round' | 'space'>;
+  
+  // Border collapse and spacing
+  borderCollapse?: ReactiveValue<'separate' | 'collapse'>;
+  borderSpacing?: ReactiveValue<string | number>;
+}
+
+// Spacing properties (Complete with logical properties)
+interface SpacingProperties {
+  // Margin
+  margin?: ReactiveValue<string | number>;
+  marginTop?: ReactiveValue<string | number>;
+  marginRight?: ReactiveValue<string | number>;
+  marginBottom?: ReactiveValue<string | number>;
+  marginLeft?: ReactiveValue<string | number>;
+  
+  // Logical margin properties
+  marginBlock?: ReactiveValue<string | number>;
+  marginInline?: ReactiveValue<string | number>;
+  marginBlockStart?: ReactiveValue<string | number>;
+  marginBlockEnd?: ReactiveValue<string | number>;
+  marginInlineStart?: ReactiveValue<string | number>;
+  marginInlineEnd?: ReactiveValue<string | number>;
+  
+  // Padding
+  padding?: ReactiveValue<string | number>;
+  paddingTop?: ReactiveValue<string | number>;
+  paddingRight?: ReactiveValue<string | number>;
+  paddingBottom?: ReactiveValue<string | number>;
+  paddingLeft?: ReactiveValue<string | number>;
+  
+  // Logical padding properties
+  paddingBlock?: ReactiveValue<string | number>;
+  paddingInline?: ReactiveValue<string | number>;
+  paddingBlockStart?: ReactiveValue<string | number>;
+  paddingBlockEnd?: ReactiveValue<string | number>;
+  paddingInlineStart?: ReactiveValue<string | number>;
+  paddingInlineEnd?: ReactiveValue<string | number>;
+}
+
+// Font properties (Complete)
+interface FontProperties {
+  font?: ReactiveValue<string>;
+  fontFamily?: ReactiveValue<string>;
+  fontSize?: ReactiveValue<string | number>;
+  fontWeight?: ReactiveValue<'normal' | 'bold' | 'lighter' | 'bolder' | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | number>;
+  fontStyle?: ReactiveValue<'normal' | 'italic' | 'oblique'>;
+  fontVariant?: ReactiveValue<'normal' | 'small-caps'>;
+  fontVariantCaps?: ReactiveValue<'normal' | 'small-caps' | 'all-small-caps' | 'petite-caps' | 'all-petite-caps' | 'unicase' | 'titling-caps'>;
+  fontVariantNumeric?: ReactiveValue<string>;
+  fontVariantAlternates?: ReactiveValue<string>;
+  fontVariantLigatures?: ReactiveValue<'normal' | 'none' | 'common-ligatures' | 'no-common-ligatures' | 'discretionary-ligatures' | 'no-discretionary-ligatures' | 'historical-ligatures' | 'no-historical-ligatures' | 'contextual' | 'no-contextual'>;
+  fontVariantEastAsian?: ReactiveValue<string>;
+  fontStretch?: ReactiveValue<'normal' | 'condensed' | 'expanded' | 'extra-condensed' | 'extra-expanded' | 'semi-condensed' | 'semi-expanded' | 'ultra-condensed' | 'ultra-expanded' | string>;
+  fontSizeAdjust?: ReactiveValue<number | 'none'>;
+  fontKerning?: ReactiveValue<'auto' | 'normal' | 'none'>;
+  fontOpticalSizing?: ReactiveValue<'auto' | 'none'>;
+  fontDisplay?: ReactiveValue<'auto' | 'block' | 'swap' | 'fallback' | 'optional'>;
+  fontFeatureSettings?: ReactiveValue<string>;
+  fontVariationSettings?: ReactiveValue<string>;
+  lineHeight?: ReactiveValue<string | number>;
+}
+
+// Text properties (Complete)
+interface TextProperties {
+  // Text alignment and direction
+  textAlign?: ReactiveValue<'left' | 'right' | 'center' | 'justify' | 'start' | 'end' | 'match-parent'>;
+  textAlignLast?: ReactiveValue<'auto' | 'left' | 'right' | 'center' | 'justify' | 'start' | 'end'>;
+  textJustify?: ReactiveValue<'auto' | 'inter-word' | 'inter-character' | 'none'>;
+  direction?: ReactiveValue<'ltr' | 'rtl'>;
+  unicodeBidi?: ReactiveValue<'normal' | 'embed' | 'bidi-override' | 'isolate' | 'isolate-override' | 'plaintext'>;
+  
+  // Text decoration
+  textDecoration?: ReactiveValue<string>;
+  textDecorationLine?: ReactiveValue<'none' | 'underline' | 'overline' | 'line-through'>;
+  textDecorationColor?: ReactiveValue<string>;
+  textDecorationStyle?: ReactiveValue<'solid' | 'double' | 'dotted' | 'dashed' | 'wavy'>;
+  textDecorationThickness?: ReactiveValue<string | number>;
+  textUnderlineOffset?: ReactiveValue<string | number>;
+  textUnderlinePosition?: ReactiveValue<'auto' | 'under' | 'left' | 'right'>;
+  textDecorationSkipInk?: ReactiveValue<'auto' | 'all' | 'none'>;
+  
+  // Text transformation and spacing
+  textTransform?: ReactiveValue<'none' | 'capitalize' | 'uppercase' | 'lowercase'>;
+  textIndent?: ReactiveValue<string | number>;
+  textShadow?: ReactiveValue<string>;
+  letterSpacing?: ReactiveValue<string | number>;
+  wordSpacing?: ReactiveValue<string | number>;
+  
+  // Text overflow and wrapping
+  textOverflow?: ReactiveValue<'clip' | 'ellipsis'>;
+  whiteSpace?: ReactiveValue<'normal' | 'nowrap' | 'pre' | 'pre-wrap' | 'pre-line' | 'break-spaces'>;
+  whiteSpaceCollapse?: ReactiveValue<'collapse' | 'preserve' | 'preserve-breaks' | 'preserve-spaces' | 'break-spaces'>;
+  wordBreak?: ReactiveValue<'normal' | 'break-all' | 'keep-all' | 'break-word'>;
+  wordWrap?: ReactiveValue<'normal' | 'break-word' | 'anywhere'>;
+  overflowWrap?: ReactiveValue<'normal' | 'break-word' | 'anywhere'>;
+  lineBreak?: ReactiveValue<'auto' | 'loose' | 'normal' | 'strict' | 'anywhere'>;
+  hyphens?: ReactiveValue<'none' | 'manual' | 'auto'>;
+  
+  // Writing modes and orientation
+  writingMode?: ReactiveValue<'horizontal-tb' | 'vertical-rl' | 'vertical-lr' | 'sideways-rl' | 'sideways-lr'>;
+  textOrientation?: ReactiveValue<'mixed' | 'upright' | 'sideways'>;
+  textCombineUpright?: ReactiveValue<'none' | 'all'>;
+  
+  // Text emphasis
+  textEmphasis?: ReactiveValue<string>;
+  textEmphasisStyle?: ReactiveValue<string>;
+  textEmphasisColor?: ReactiveValue<string>;
+  textEmphasisPosition?: ReactiveValue<string>;
+  
+  // Text rendering
+  textRendering?: ReactiveValue<'auto' | 'optimizeSpeed' | 'optimizeLegibility' | 'geometricPrecision'>;
+  
+  // Tab size
+  tabSize?: ReactiveValue<number | string>;
+  
+  // Hanging punctuation
+  hangingPunctuation?: ReactiveValue<'none' | 'first' | 'last' | 'allow-end' | 'force-end'>;
+}
+
+// Flexbox properties (Complete)
+interface FlexboxProperties {
+  // Container properties
+  display?: ReactiveValue<string>; // Will be overridden in main interface
+  flexDirection?: ReactiveValue<'row' | 'row-reverse' | 'column' | 'column-reverse'>;
+  flexWrap?: ReactiveValue<'nowrap' | 'wrap' | 'wrap-reverse'>;
+  flexFlow?: ReactiveValue<string>;
+  justifyContent?: ReactiveValue<'flex-start' | 'flex-end' | 'center' | 'space-between' | 'space-around' | 'space-evenly' | 'start' | 'end' | 'left' | 'right' | 'safe center' | 'unsafe center'>;
+  alignItems?: ReactiveValue<'stretch' | 'flex-start' | 'flex-end' | 'center' | 'baseline' | 'start' | 'end' | 'self-start' | 'self-end' | 'safe center' | 'unsafe center'>;
+  alignContent?: ReactiveValue<'stretch' | 'flex-start' | 'flex-end' | 'center' | 'space-between' | 'space-around' | 'space-evenly' | 'start' | 'end' | 'safe center' | 'unsafe center'>;
+  
+  // Item properties
+  alignSelf?: ReactiveValue<'auto' | 'stretch' | 'flex-start' | 'flex-end' | 'center' | 'baseline' | 'start' | 'end' | 'self-start' | 'self-end' | 'safe center' | 'unsafe center'>;
+  flex?: ReactiveValue<string | number>;
+  flexGrow?: ReactiveValue<number>;
+  flexShrink?: ReactiveValue<number>;
+  flexBasis?: ReactiveValue<string | number>;
+  order?: ReactiveValue<number>;
+  
+  // Gap properties
+  gap?: ReactiveValue<string | number>;
+  rowGap?: ReactiveValue<string | number>;
+  columnGap?: ReactiveValue<string | number>;
+}
+
+// Grid properties (Complete)
+interface GridProperties {
+  // Container properties
+  display?: ReactiveValue<string>; // Will be overridden in main interface
+  gridTemplate?: ReactiveValue<string>;
+  gridTemplateColumns?: ReactiveValue<string>;
+  gridTemplateRows?: ReactiveValue<string>;
+  gridTemplateAreas?: ReactiveValue<string>;
+  gridAutoColumns?: ReactiveValue<string>;
+  gridAutoRows?: ReactiveValue<string>;
+  gridAutoFlow?: ReactiveValue<'row' | 'column' | 'row dense' | 'column dense'>;
+  
+  // Item properties
+  gridColumn?: ReactiveValue<string>;
+  gridColumnStart?: ReactiveValue<string | number>;
+  gridColumnEnd?: ReactiveValue<string | number>;
+  gridRow?: ReactiveValue<string>;
+  gridRowStart?: ReactiveValue<string | number>;
+  gridRowEnd?: ReactiveValue<string | number>;
+  gridArea?: ReactiveValue<string>;
+  
+  // Gap properties (shared with flexbox)
+  gap?: ReactiveValue<string | number>;
+  rowGap?: ReactiveValue<string | number>;
+  columnGap?: ReactiveValue<string | number>;
+  
+  // Alignment properties
+  justifyItems?: ReactiveValue<'stretch' | 'start' | 'end' | 'center' | 'baseline' | 'safe center' | 'unsafe center'>;
+  alignItems?: ReactiveValue<'stretch' | 'start' | 'end' | 'center' | 'baseline' | 'safe center' | 'unsafe center'>;
+  placeItems?: ReactiveValue<string>;
+  justifyContent?: ReactiveValue<'start' | 'end' | 'center' | 'stretch' | 'space-around' | 'space-between' | 'space-evenly' | 'safe center' | 'unsafe center'>;
+  alignContent?: ReactiveValue<'start' | 'end' | 'center' | 'stretch' | 'space-around' | 'space-between' | 'space-evenly' | 'safe center' | 'unsafe center'>;
+  placeContent?: ReactiveValue<string>;
+  justifySelf?: ReactiveValue<'stretch' | 'start' | 'end' | 'center' | 'baseline' | 'safe center' | 'unsafe center'>;
+  alignSelf?: ReactiveValue<'stretch' | 'start' | 'end' | 'center' | 'baseline' | 'safe center' | 'unsafe center'>;
+  placeSelf?: ReactiveValue<string>;
+}
+
+// Animation properties (Complete)
+interface AnimationProperties {
+  animation?: ReactiveValue<string>;
+  animationName?: ReactiveValue<string>;
+  animationDuration?: ReactiveValue<string>;
+  animationTimingFunction?: ReactiveValue<'linear' | 'ease' | 'ease-in' | 'ease-out' | 'ease-in-out' | 'step-start' | 'step-end' | string>;
+  animationDelay?: ReactiveValue<string>;
+  animationIterationCount?: ReactiveValue<number | 'infinite'>;
+  animationDirection?: ReactiveValue<'normal' | 'reverse' | 'alternate' | 'alternate-reverse'>;
+  animationFillMode?: ReactiveValue<'none' | 'forwards' | 'backwards' | 'both'>;
+  animationPlayState?: ReactiveValue<'running' | 'paused'>;
+  animationTimeline?: ReactiveValue<string>;
+  animationRangeStart?: ReactiveValue<string>;
+  animationRangeEnd?: ReactiveValue<string>;
+}
+
+// Transition properties (Complete)
+interface TransitionProperties {
+  transition?: ReactiveValue<string>;
+  transitionProperty?: ReactiveValue<string>;
+  transitionDuration?: ReactiveValue<string>;
+  transitionTimingFunction?: ReactiveValue<'linear' | 'ease' | 'ease-in' | 'ease-out' | 'ease-in-out' | 'step-start' | 'step-end' | string>;
+  transitionDelay?: ReactiveValue<string>;
+  transitionBehavior?: ReactiveValue<'normal' | 'allow-discrete'>;
+}
+
+// Position properties (Complete with logical properties)
+interface PositionProperties {
+  position?: ReactiveValue<'static' | 'relative' | 'absolute' | 'fixed' | 'sticky'>;
+  
+  // Physical properties
+  top?: ReactiveValue<string | number>;
+  right?: ReactiveValue<string | number>;
+  bottom?: ReactiveValue<string | number>;
+  left?: ReactiveValue<string | number>;
+  
+  // Logical properties
+  inset?: ReactiveValue<string | number>;
+  insetBlock?: ReactiveValue<string | number>;
+  insetInline?: ReactiveValue<string | number>;
+  insetBlockStart?: ReactiveValue<string | number>;
+  insetBlockEnd?: ReactiveValue<string | number>;
+  insetInlineStart?: ReactiveValue<string | number>;
+  insetInlineEnd?: ReactiveValue<string | number>;
+  
+  zIndex?: ReactiveValue<number | 'auto'>;
+}
+
+// Filter properties (Complete)
+interface FilterProperties {
+  filter?: ReactiveValue<string>;
+  backdropFilter?: ReactiveValue<string>;
+  
+  // Individual filter functions (for convenience)
+  blur?: ReactiveValue<string | number>;
+  brightness?: ReactiveValue<string | number>;
+  contrast?: ReactiveValue<string | number>;
+  dropShadow?: ReactiveValue<string>;
+  grayscale?: ReactiveValue<string | number>;
+  hueRotate?: ReactiveValue<string | number>;
+  invert?: ReactiveValue<string | number>;
+  opacity?: ReactiveValue<number>;
+  saturate?: ReactiveValue<string | number>;
+  sepia?: ReactiveValue<string | number>;
+}
+
+// Scroll properties (Complete)
+interface ScrollProperties {
+  scrollBehavior?: ReactiveValue<'auto' | 'smooth'>;
+  scrollSnapType?: ReactiveValue<string>;
+  scrollSnapAlign?: ReactiveValue<'none' | 'start' | 'end' | 'center'>;
+  scrollSnapStop?: ReactiveValue<'normal' | 'always'>;
+  
+  // Scroll margins
+  scrollMargin?: ReactiveValue<string | number>;
+  scrollMarginTop?: ReactiveValue<string | number>;
+  scrollMarginRight?: ReactiveValue<string | number>;
+  scrollMarginBottom?: ReactiveValue<string | number>;
+  scrollMarginLeft?: ReactiveValue<string | number>;
+  scrollMarginBlock?: ReactiveValue<string | number>;
+  scrollMarginBlockStart?: ReactiveValue<string | number>;
+  scrollMarginBlockEnd?: ReactiveValue<string | number>;
+  scrollMarginInline?: ReactiveValue<string | number>;
+  scrollMarginInlineStart?: ReactiveValue<string | number>;
+  scrollMarginInlineEnd?: ReactiveValue<string | number>;
+  
+  // Scroll padding
+  scrollPadding?: ReactiveValue<string | number>;
+  scrollPaddingTop?: ReactiveValue<string | number>;
+  scrollPaddingRight?: ReactiveValue<string | number>;
+  scrollPaddingBottom?: ReactiveValue<string | number>;
+  scrollPaddingLeft?: ReactiveValue<string | number>;
+  scrollPaddingBlock?: ReactiveValue<string | number>;
+  scrollPaddingBlockStart?: ReactiveValue<string | number>;
+  scrollPaddingBlockEnd?: ReactiveValue<string | number>;
+  scrollPaddingInline?: ReactiveValue<string | number>;
+  scrollPaddingInlineStart?: ReactiveValue<string | number>;
+  scrollPaddingInlineEnd?: ReactiveValue<string | number>;
+  
+  // Overscroll behavior
+  overscrollBehavior?: ReactiveValue<'auto' | 'contain' | 'none'>;
+  overscrollBehaviorX?: ReactiveValue<'auto' | 'contain' | 'none'>;
+  overscrollBehaviorY?: ReactiveValue<'auto' | 'contain' | 'none'>;
+  overscrollBehaviorBlock?: ReactiveValue<'auto' | 'contain' | 'none'>;
+  overscrollBehaviorInline?: ReactiveValue<'auto' | 'contain' | 'none'>;
+}
+
+// Modern CSS properties (Complete)
+interface ModernCSSProperties {
+  // CSS containment
+  contain?: ReactiveValue<'none' | 'strict' | 'content' | 'size' | 'layout' | 'style' | 'paint' | 'inline-size' | 'block-size'>;
+  containIntrinsicSize?: ReactiveValue<string>;
+  containIntrinsicWidth?: ReactiveValue<string>;
+  containIntrinsicHeight?: ReactiveValue<string>;
+  containIntrinsicBlockSize?: ReactiveValue<string>;
+  containIntrinsicInlineSize?: ReactiveValue<string>;
+  
+  // Container queries
+  containerType?: ReactiveValue<'normal' | 'size' | 'inline-size'>;
+  containerName?: ReactiveValue<string>;
+  container?: ReactiveValue<string>;
+  
+  // Aspect ratio
+  aspectRatio?: ReactiveValue<string | number>;
+  
+  // CSS layers
+  '@layer'?: ReactiveValue<string>;
+  
+  // Cascade layers
+  '@import'?: ReactiveValue<string>;
+  
+  // Color scheme
+  colorScheme?: ReactiveValue<'normal' | 'light' | 'dark' | 'light dark' | 'dark light'>;
+  
+  // Accent color
+  accentColor?: ReactiveValue<string>;
+  
+  // Forced colors
+  forcedColorAdjust?: ReactiveValue<'auto' | 'none'>;
+  
+  // User preferences
+  prefersReducedMotion?: ReactiveValue<'no-preference' | 'reduce'>;
+  prefersColorScheme?: ReactiveValue<'light' | 'dark'>;
+  prefersContrast?: ReactiveValue<'no-preference' | 'more' | 'less'>;
+  prefersReducedData?: ReactiveValue<'no-preference' | 'reduce'>;
+  
+  // CSS nesting
+  '&'?: ReactiveValue<any>;
+  
+  // Math functions
+  calc?: ReactiveValue<string>;
+  min?: ReactiveValue<string>;
+  max?: ReactiveValue<string>;
+  clamp?: ReactiveValue<string>;
+  
+  // Custom highlights
+  '::highlight'?: ReactiveValue<any>;
+  '::selection'?: ReactiveValue<any>;
+  '::first-line'?: ReactiveValue<any>;
+  '::first-letter'?: ReactiveValue<any>;
+  '::before'?: ReactiveValue<any>;
+  '::after'?: ReactiveValue<any>;
+  
+  // View transitions
+  viewTransitionName?: ReactiveValue<string>;
+  
+  // Anchor positioning
+  anchorName?: ReactiveValue<string>;
+  positionAnchor?: ReactiveValue<string>;
+  anchorDefault?: ReactiveValue<string>;
+  
+  // Popover API
+  popoverHideDelay?: ReactiveValue<string>;
+  popoverShowDelay?: ReactiveValue<string>;
+}
+
+// Interaction properties (Complete)
+interface InteractionProperties {
+  // Pointer events
+  pointerEvents?: ReactiveValue<'auto' | 'none' | 'visiblePainted' | 'visibleFill' | 'visibleStroke' | 'visible' | 'painted' | 'fill' | 'stroke' | 'all'>;
+  
+  // Touch action
+  touchAction?: ReactiveValue<'auto' | 'none' | 'pan-x' | 'pan-left' | 'pan-right' | 'pan-y' | 'pan-up' | 'pan-down' | 'pinch-zoom' | 'manipulation'>;
+  
+  // User select
+  userSelect?: ReactiveValue<'auto' | 'none' | 'text' | 'contain' | 'all'>;
+  
+  // User modify
+  userModify?: ReactiveValue<'read-only' | 'read-write' | 'write-only'>;
+  
+  // Cursor
+  cursor?: ReactiveValue<'auto' | 'default' | 'none' | 'context-menu' | 'help' | 'pointer' | 'progress' | 'wait' | 'cell' | 'crosshair' | 'text' | 'vertical-text' | 'alias' | 'copy' | 'move' | 'no-drop' | 'not-allowed' | 'grab' | 'grabbing' | 'e-resize' | 'n-resize' | 'ne-resize' | 'nw-resize' | 's-resize' | 'se-resize' | 'sw-resize' | 'w-resize' | 'ew-resize' | 'ns-resize' | 'nesw-resize' | 'nwse-resize' | 'col-resize' | 'row-resize' | 'all-scroll' | 'zoom-in' | 'zoom-out' | string>;
+  
+  // Resize
+  resize?: ReactiveValue<'none' | 'both' | 'horizontal' | 'vertical' | 'block' | 'inline'>;
+  
+  // Scroll behavior
+  scrollBehavior?: ReactiveValue<'auto' | 'smooth'>;
+  
+  // Caret
+  caretColor?: ReactiveValue<string>;
+  
+  // Tab size for editable content
+  tabSize?: ReactiveValue<number | string>;
+  
+  // Will change (performance hint)
+  willChange?: ReactiveValue<'auto' | 'scroll-position' | 'contents' | string>;
+  
+  // Appearance
+  appearance?: ReactiveValue<'none' | 'auto' | 'textfield' | 'searchfield' | 'textarea' | 'push-button' | 'slider-horizontal' | 'checkbox' | 'radio' | 'square-button' | 'menulist' | 'listbox' | 'meter' | 'progress-bar'>;
+}
+
+// Color and visual properties (Complete)
+interface ColorProperties {
+  // Basic colors
+  color?: ReactiveValue<string>;
+  backgroundColor?: ReactiveValue<string>;
+  
+  // Color functions
+  currentColor?: ReactiveValue<string>;
+  
+  // Opacity
+  opacity?: ReactiveValue<number>;
+  
+  // Mix blend mode
+  mixBlendMode?: ReactiveValue<'normal' | 'multiply' | 'screen' | 'overlay' | 'darken' | 'lighten' | 'color-dodge' | 'color-burn' | 'hard-light' | 'soft-light' | 'difference' | 'exclusion' | 'hue' | 'saturation' | 'color' | 'luminosity'>;
+  
+  // Isolation
+  isolation?: ReactiveValue<'auto' | 'isolate'>;
+  
+  // Print color adjust
+  printColorAdjust?: ReactiveValue<'economy' | 'exact'>;
+  colorAdjust?: ReactiveValue<'economy' | 'exact'>;
+}
+
+// Layout properties (Complete)
+interface LayoutProperties {
+  // Display
+  display?: ReactiveValue<'none' | 'block' | 'inline' | 'inline-block' | 'flex' | 'inline-flex' | 'grid' | 'inline-grid' | 'table' | 'inline-table' | 'table-row-group' | 'table-header-group' | 'table-footer-group' | 'table-row' | 'table-cell' | 'table-column-group' | 'table-column' | 'table-caption' | 'list-item' | 'run-in' | 'contents' | 'flow' | 'flow-root'>;
+  
+  // Visibility
+  visibility?: ReactiveValue<'visible' | 'hidden' | 'collapse'>;
+  
+  // Box sizing
+  boxSizing?: ReactiveValue<'content-box' | 'border-box'>;
+  
+  // Sizing
+  width?: ReactiveValue<string | number>;
+  height?: ReactiveValue<string | number>;
+  minWidth?: ReactiveValue<string | number>;
+  minHeight?: ReactiveValue<string | number>;
+  maxWidth?: ReactiveValue<string | number>;
+  maxHeight?: ReactiveValue<string | number>;
+  
+  // Logical sizing
+  inlineSize?: ReactiveValue<string | number>;
+  blockSize?: ReactiveValue<string | number>;
+  minInlineSize?: ReactiveValue<string | number>;
+  minBlockSize?: ReactiveValue<string | number>;
+  maxInlineSize?: ReactiveValue<string | number>;
+  maxBlockSize?: ReactiveValue<string | number>;
+  
+  // Float and clear
+  float?: ReactiveValue<'none' | 'left' | 'right' | 'inline-start' | 'inline-end'>;
+  clear?: ReactiveValue<'none' | 'left' | 'right' | 'both' | 'inline-start' | 'inline-end'>;
+  
+  // Overflow
+  overflow?: ReactiveValue<'visible' | 'hidden' | 'clip' | 'scroll' | 'auto'>;
+  overflowX?: ReactiveValue<'visible' | 'hidden' | 'clip' | 'scroll' | 'auto'>;
+  overflowY?: ReactiveValue<'visible' | 'hidden' | 'clip' | 'scroll' | 'auto'>;
+  overflowBlock?: ReactiveValue<'visible' | 'hidden' | 'clip' | 'scroll' | 'auto'>;
+  overflowInline?: ReactiveValue<'visible' | 'hidden' | 'clip' | 'scroll' | 'auto'>;
+  overflowWrap?: ReactiveValue<'normal' | 'break-word' | 'anywhere'>;
+  overflowClipMargin?: ReactiveValue<string>;
+  
+  // Object fit and position
+  objectFit?: ReactiveValue<'fill' | 'contain' | 'cover' | 'none' | 'scale-down'>;
+  objectPosition?: ReactiveValue<string>;
+  
+  // Vertical align
+  verticalAlign?: ReactiveValue<'baseline' | 'sub' | 'super' | 'text-top' | 'text-bottom' | 'middle' | 'top' | 'bottom' | string | number>;
+}
+
+// Shadow and effects properties (Complete)
+interface ShadowProperties {
+  // Box shadow
+  boxShadow?: ReactiveValue<string>;
+  
+  // Text shadow (already in TextProperties, but included for completeness)
+  textShadow?: ReactiveValue<string>;
+  
+  // Drop shadow filter (already in FilterProperties, but included for completeness)
+  dropShadow?: ReactiveValue<string>;
+}
+
+// Table properties (Complete)
+interface TableProperties {
+  tableLayout?: ReactiveValue<'auto' | 'fixed'>;
+  borderCollapse?: ReactiveValue<'separate' | 'collapse'>;
+  borderSpacing?: ReactiveValue<string | number>;
+  captionSide?: ReactiveValue<'top' | 'bottom' | 'block-start' | 'block-end' | 'inline-start' | 'inline-end'>;
+  emptyCells?: ReactiveValue<'show' | 'hide'>;
+}
+
+// List properties (Complete)
+interface ListProperties {
+  listStyle?: ReactiveValue<string>;
+  listStyleType?: ReactiveValue<'none' | 'disc' | 'circle' | 'square' | 'decimal' | 'decimal-leading-zero' | 'lower-roman' | 'upper-roman' | 'lower-greek' | 'lower-latin' | 'upper-latin' | 'armenian' | 'georgian' | 'lower-alpha' | 'upper-alpha' | 'arabic-indic' | 'bengali' | 'cambodian' | 'cjk-decimal' | 'devanagari' | 'gujarati' | 'gurmukhi' | 'hebrew' | 'hiragana' | 'hiragana-iroha' | 'japanese-formal' | 'japanese-informal' | 'kannada' | 'katakana' | 'katakana-iroha' | 'khmer' | 'korean-hangul-formal' | 'korean-hanja-formal' | 'korean-hanja-informal' | 'lao' | 'lower-armenian' | 'malayalam' | 'mongolian' | 'myanmar' | 'oriya' | 'persian' | 'simp-chinese-formal' | 'simp-chinese-informal' | 'tamil' | 'telugu' | 'thai' | 'tibetan' | 'trad-chinese-formal' | 'trad-chinese-informal' | 'upper-armenian' | string>;
+  listStylePosition?: ReactiveValue<'inside' | 'outside'>;
+  listStyleImage?: ReactiveValue<string>;
+}
+
+// Outline properties (Complete)
+interface OutlineProperties {
+  outline?: ReactiveValue<string>;
+  outlineColor?: ReactiveValue<string>;
+  outlineStyle?: ReactiveValue<'none' | 'auto' | 'solid' | 'dashed' | 'dotted' | 'double' | 'groove' | 'ridge' | 'inset' | 'outset'>;
+  outlineWidth?: ReactiveValue<string | number>;
+  outlineOffset?: ReactiveValue<string | number>;
+}
+
+// Content properties (Complete)
+interface ContentProperties {
+  content?: ReactiveValue<string>;
+  quotes?: ReactiveValue<string>;
+  counterReset?: ReactiveValue<string>;
+  counterIncrement?: ReactiveValue<string>;
+  counterSet?: ReactiveValue<string>;
+}
+
+// Ruby properties (Complete)
+interface RubyProperties {
+  rubyAlign?: ReactiveValue<'start' | 'center' | 'space-between' | 'space-around'>;
+  rubyMerge?: ReactiveValue<'separate' | 'collapse' | 'auto'>;
+  rubyPosition?: ReactiveValue<'over' | 'under' | 'inter-character'>;
+}
+
+// Print properties (Complete)
+interface PrintProperties {
+  breakAfter?: ReactiveValue<'auto' | 'avoid' | 'always' | 'all' | 'avoid-page' | 'page' | 'left' | 'right' | 'recto' | 'verso' | 'avoid-column' | 'column' | 'avoid-region' | 'region'>;
+  breakBefore?: ReactiveValue<'auto' | 'avoid' | 'always' | 'all' | 'avoid-page' | 'page' | 'left' | 'right' | 'recto' | 'verso' | 'avoid-column' | 'column' | 'avoid-region' | 'region'>;
+  breakInside?: ReactiveValue<'auto' | 'avoid' | 'avoid-page' | 'avoid-column' | 'avoid-region'>;
+  pageBreakAfter?: ReactiveValue<'auto' | 'always' | 'avoid' | 'left' | 'right' | 'recto' | 'verso'>;
+  pageBreakBefore?: ReactiveValue<'auto' | 'always' | 'avoid' | 'left' | 'right' | 'recto' | 'verso'>;
+  pageBreakInside?: ReactiveValue<'auto' | 'avoid'>;
+  orphans?: ReactiveValue<number>;
+  widows?: ReactiveValue<number>;
+}
+
+// SVG properties (Complete)
+interface SVGProperties {
+  // Fill and stroke
+  fill?: ReactiveValue<string>;
+  fillOpacity?: ReactiveValue<number>;
+  fillRule?: ReactiveValue<'nonzero' | 'evenodd'>;
+  stroke?: ReactiveValue<string>;
+  strokeWidth?: ReactiveValue<string | number>;
+  strokeOpacity?: ReactiveValue<number>;
+  strokeLinecap?: ReactiveValue<'butt' | 'round' | 'square'>;
+  strokeLinejoin?: ReactiveValue<'miter' | 'round' | 'bevel'>;
+  strokeDasharray?: ReactiveValue<string>;
+  strokeDashoffset?: ReactiveValue<string | number>;
+  strokeMiterlimit?: ReactiveValue<number>;
+  
+  // Markers
+  marker?: ReactiveValue<string>;
+  markerStart?: ReactiveValue<string>;
+  markerMid?: ReactiveValue<string>;
+  markerEnd?: ReactiveValue<string>;
+  
+  // Text properties
+  textAnchor?: ReactiveValue<'start' | 'middle' | 'end'>;
+  dominantBaseline?: ReactiveValue<'auto' | 'text-bottom' | 'alphabetic' | 'ideographic' | 'middle' | 'central' | 'mathematical' | 'hanging' | 'text-top'>;
+  alignmentBaseline?: ReactiveValue<'auto' | 'baseline' | 'before-edge' | 'text-before-edge' | 'middle' | 'central' | 'after-edge' | 'text-after-edge' | 'ideographic' | 'alphabetic' | 'hanging' | 'mathematical'>;
+  
+  // Clipping and masking
+  clipPath?: ReactiveValue<string>;
+  clipRule?: ReactiveValue<'nonzero' | 'evenodd'>;
+  mask?: ReactiveValue<string>;
+  
+  // Other SVG properties
+  vectorEffect?: ReactiveValue<'none' | 'non-scaling-stroke' | 'non-scaling-size' | 'non-rotation' | 'fixed-position'>;
+  shapeRendering?: ReactiveValue<'auto' | 'optimizeSpeed' | 'crispEdges' | 'geometricPrecision'>;
+  colorInterpolation?: ReactiveValue<'auto' | 'sRGB' | 'linearRGB'>;
+  colorInterpolationFilters?: ReactiveValue<'auto' | 'sRGB' | 'linearRGB'>;
+  paintOrder?: ReactiveValue<string>;
+}
+
+// Complete CSS Properties interface
+interface CSSProperties extends 
+  TransformProperties,
+  BackgroundProperties,
+  BorderProperties,
+  SpacingProperties,
+  FontProperties,
+  TextProperties,
+  FlexboxProperties,
+  GridProperties,
+  AnimationProperties,
+  TransitionProperties,
+  PositionProperties,
+  FilterProperties,
+  ScrollProperties,
+  ModernCSSProperties,
+  InteractionProperties,
+  ColorProperties,
+  LayoutProperties,
+  ShadowProperties,
+  TableProperties,
+  ListProperties,
+  OutlineProperties,
+  ContentProperties,
+  RubyProperties,
+  PrintProperties,
+  SVGProperties {
+  
+  // CSS Custom Properties (CSS Variables)
+  [key: `--${string}`]: ReactiveValue<string | number>;
+  
+  // Vendor prefixes
+  [key: `-webkit-${string}`]: ReactiveValue<string | number>;
+  [key: `-moz-${string}`]: ReactiveValue<string | number>;
+  [key: `-ms-${string}`]: ReactiveValue<string | number>;
+  [key: `-o-${string}`]: ReactiveValue<string | number>;
+  
+  // Fallback for any CSS property not explicitly defined
+  [key: string]: ReactiveValue<string | number> | undefined;
+}
+
+// Extended style interface with nested selectors, media queries, and at-rules
+interface ExtendedStyleObject extends CSSProperties {
+  // Pseudo-classes
+  ':hover'?: CSSProperties;
+  ':focus'?: CSSProperties;
+  ':focus-visible'?: CSSProperties;
+  ':focus-within'?: CSSProperties;
+  ':active'?: CSSProperties;
+  ':visited'?: CSSProperties;
+  ':link'?: CSSProperties;
+  ':target'?: CSSProperties;
+  ':target-within'?: CSSProperties;
+  ':scope'?: CSSProperties;
+  ':current'?: CSSProperties;
+  ':past'?: CSSProperties;
+  ':future'?: CSSProperties;
+  ':playing'?: CSSProperties;
+  ':paused'?: CSSProperties;
+  ':seeking'?: CSSProperties;
+  ':buffering'?: CSSProperties;
+  ':stalled'?: CSSProperties;
+  ':muted'?: CSSProperties;
+  ':volume-locked'?: CSSProperties;
+  ':fullscreen'?: CSSProperties;
+  ':picture-in-picture'?: CSSProperties;
+  ':user-invalid'?: CSSProperties;
+  ':user-valid'?: CSSProperties;
+  ':enabled'?: CSSProperties;
+  ':disabled'?: CSSProperties;
+  ':read-only'?: CSSProperties;
+  ':read-write'?: CSSProperties;
+  ':placeholder-shown'?: CSSProperties;
+  ':default'?: CSSProperties;
+  ':checked'?: CSSProperties;
+  ':indeterminate'?: CSSProperties;
+  ':blank'?: CSSProperties;
+  ':empty'?: CSSProperties;
+  ':valid'?: CSSProperties;
+  ':invalid'?: CSSProperties;
+  ':in-range'?: CSSProperties;
+  ':out-of-range'?: CSSProperties;
+  ':required'?: CSSProperties;
+  ':optional'?: CSSProperties;
+  ':autofill'?: CSSProperties;
+  ':root'?: CSSProperties;
+  ':defined'?: CSSProperties;
+  ':host'?: CSSProperties;
+  ':host-context'?: CSSProperties;
+  
+  // Structural pseudo-classes
+  ':first-child'?: CSSProperties;
+  ':last-child'?: CSSProperties;
+  ':only-child'?: CSSProperties;
+  ':first-of-type'?: CSSProperties;
+  ':last-of-type'?: CSSProperties;
+  ':only-of-type'?: CSSProperties;
+  ':nth-child(n)'?: CSSProperties;
+  ':nth-last-child(n)'?: CSSProperties;
+  ':nth-of-type(n)'?: CSSProperties;
+  ':nth-last-of-type(n)'?: CSSProperties;
+  
+  // Pseudo-elements
+  '::before'?: CSSProperties;
+  '::after'?: CSSProperties;
+  '::first-line'?: CSSProperties;
+  '::first-letter'?: CSSProperties;
+  '::selection'?: CSSProperties;
+  '::backdrop'?: CSSProperties;
+  '::placeholder'?: CSSProperties;
+  '::marker'?: CSSProperties;
+  '::spelling-error'?: CSSProperties;
+  '::grammar-error'?: CSSProperties;
+  '::file-selector-button'?: CSSProperties;
+  '::cue'?: CSSProperties;
+  '::cue-region'?: CSSProperties;
+  '::part'?: CSSProperties;
+  '::slotted'?: CSSProperties;
+  '::highlight'?: CSSProperties;
+  '::view-transition'?: CSSProperties;
+  '::view-transition-group'?: CSSProperties;
+  '::view-transition-image-pair'?: CSSProperties;
+  '::view-transition-old'?: CSSProperties;
+  '::view-transition-new'?: CSSProperties;
+  
+  // Media queries
+  '@media screen'?: CSSProperties;
+  '@media print'?: CSSProperties;
+  '@media (max-width: 767px)'?: CSSProperties;
+  '@media (min-width: 768px)'?: CSSProperties;
+  '@media (max-width: 1023px)'?: CSSProperties;
+  '@media (min-width: 1024px)'?: CSSProperties;
+  '@media (max-width: 1199px)'?: CSSProperties;
+  '@media (min-width: 1200px)'?: CSSProperties;
+  '@media (max-width: 1399px)'?: CSSProperties;
+  '@media (min-width: 1400px)'?: CSSProperties;
+  '@media (orientation: portrait)'?: CSSProperties;
+  '@media (orientation: landscape)'?: CSSProperties;
+  '@media (prefers-color-scheme: light)'?: CSSProperties;
+  '@media (prefers-color-scheme: dark)'?: CSSProperties;
+  '@media (prefers-reduced-motion: no-preference)'?: CSSProperties;
+  '@media (prefers-reduced-motion: reduce)'?: CSSProperties;
+  '@media (prefers-contrast: no-preference)'?: CSSProperties;
+  '@media (prefers-contrast: more)'?: CSSProperties;
+  '@media (prefers-contrast: less)'?: CSSProperties;
+  '@media (prefers-reduced-data: no-preference)'?: CSSProperties;
+  '@media (prefers-reduced-data: reduce)'?: CSSProperties;
+  '@media (prefers-reduced-transparency: no-preference)'?: CSSProperties;
+  '@media (prefers-reduced-transparency: reduce)'?: CSSProperties;
+  '@media (forced-colors: none)'?: CSSProperties;
+  '@media (forced-colors: active)'?: CSSProperties;
+  '@media (hover: hover)'?: CSSProperties;
+  '@media (hover: none)'?: CSSProperties;
+  '@media (any-hover: hover)'?: CSSProperties;
+  '@media (any-hover: none)'?: CSSProperties;
+  '@media (pointer: fine)'?: CSSProperties;
+  '@media (pointer: coarse)'?: CSSProperties;
+  '@media (pointer: none)'?: CSSProperties;
+  '@media (any-pointer: fine)'?: CSSProperties;
+  '@media (any-pointer: coarse)'?: CSSProperties;
+  '@media (any-pointer: none)'?: CSSProperties;
+  '@media (update: fast)'?: CSSProperties;
+  '@media (update: slow)'?: CSSProperties;
+  '@media (update: none)'?: CSSProperties;
+  '@media (overflow-block: none)'?: CSSProperties;
+  '@media (overflow-block: scroll)'?: CSSProperties;
+  '@media (overflow-block: optional-paged)'?: CSSProperties;
+  '@media (overflow-block: paged)'?: CSSProperties;
+  '@media (overflow-inline: none)'?: CSSProperties;
+  '@media (overflow-inline: scroll)'?: CSSProperties;
+  
+  // Container queries
+  '@container (min-width: 0px)'?: CSSProperties;
+  '@container (max-width: 767px)'?: CSSProperties;
+  '@container (min-width: 768px)'?: CSSProperties;
+  '@container (max-width: 1023px)'?: CSSProperties;
+  '@container (min-width: 1024px)'?: CSSProperties;
+  '@container (orientation: portrait)'?: CSSProperties;
+  '@container (orientation: landscape)'?: CSSProperties;
+  '@container style(--custom-property: value)'?: CSSProperties;
+  
+  // Support queries
+  '@supports (display: flex)'?: CSSProperties;
+  '@supports (display: grid)'?: CSSProperties;
+  '@supports (display: subgrid)'?: CSSProperties;
+  '@supports (backdrop-filter: blur(10px))'?: CSSProperties;
+  '@supports (mask: url(mask.png))'?: CSSProperties;
+  '@supports (clip-path: circle(50%))'?: CSSProperties;
+  '@supports (container-type: inline-size)'?: CSSProperties;
+  '@supports (view-transition-name: none)'?: CSSProperties;
+  '@supports (anchor-name: --anchor)'?: CSSProperties;
+  '@supports (position-anchor: --anchor)'?: CSSProperties;
+  '@supports selector(:has(> img))'?: CSSProperties;
+  '@supports font-tech(color-COLRv1)'?: CSSProperties;
+  
+  // Document and layer rules
+  '@layer base'?: CSSProperties;
+  '@layer components'?: CSSProperties;
+  '@layer utilities'?: CSSProperties;
+  '@scope'?: CSSProperties;
+  '@starting-style'?: CSSProperties;
+  '@page'?: CSSProperties;
+  '@page :first'?: CSSProperties;
+  '@page :left'?: CSSProperties;
+  '@page :right'?: CSSProperties;
+  '@page :blank'?: CSSProperties;
+  
+  // Keyframes
+  '@keyframes'?: Record<string, CSSProperties>;
+  
+  // Child selectors and combinators
+  '& > *'?: CSSProperties;
+  '& + *'?: CSSProperties;
+  '& ~ *'?: CSSProperties;
+  '& *'?: CSSProperties;
+  '&:not()'?: CSSProperties;
+  '&:is()'?: CSSProperties;
+  '&:where()'?: CSSProperties;
+  '&:has()'?: CSSProperties;
+  
+  // Allow any selector pattern
+  [key: `&${string}`]: CSSProperties; // Nested selectors
+  [key: `@${string}`]: CSSProperties; // At-rules
+  [key: `:${string}`]: CSSProperties; // Pseudo-selectors
+  [key: `::${string}`]: CSSProperties; // Pseudo-elements
+  [key: `[${string}]`]: CSSProperties; // Attribute selectors
+}
+
+// Main style value type
+type StyleValue = CSSProperties | ExtendedStyleObject;
+
+// Export all interfaces
+export {
+  // Core types
+  ReactiveValue,
+  StyleValue,
+  
+  // Main interfaces
+  CSSProperties,
+  ExtendedStyleObject,
+  
+  // Sub-property interfaces
+  TransformProperties,
+  BackgroundProperties,
+  BorderProperties,
+  SpacingProperties,
+  FontProperties,
+  TextProperties,
+  FlexboxProperties,
+  GridProperties,
+  AnimationProperties,
+  TransitionProperties,
+  PositionProperties,
+  FilterProperties,
+  ScrollProperties,
+  ModernCSSProperties,
+  InteractionProperties,
+  ColorProperties,
+  LayoutProperties,
+  ShadowProperties,
+  TableProperties,
+  ListProperties,
+  OutlineProperties,
+  ContentProperties,
+  RubyProperties,
+  PrintProperties,
+  SVGProperties
+};
+
+
 // Juris Object VDOM namespace to handle circular references properly
 export namespace JurisVDOM {
   // Base element properties that all elements can have - with smart async support
@@ -241,7 +1171,7 @@ export namespace JurisVDOM {
     'data-value'?: ReactiveValue<string>;
     
     // Style - can be reactive object or function returning styles
-    style?: ReactiveValue<Record<string, string | number>>;
+    style?: ReactiveValue<StyleValue>;
     
     // Global event handlers - automatically support async
     onClick?: SmartEventHandler<JurisMouseEventWithTarget>;
@@ -1016,7 +1946,8 @@ interface JurisContextCore extends ComponentState<any> {
   headless?: Record<string, any>;
   isSSR?: boolean;
   element?: HTMLElement;
-  executeBatch?: (callback: () => any) => any;
+  headlessAPIs: Record<string, any>;
+  executeBatch: (callback: () => any) => any;
   newState?: <T>(key: string, initialValue: T) => [() => T, (value: T) => void];
   components?: {
     register: (name: string, component: JurisComponentFunction<any>) => void;
@@ -1146,13 +2077,6 @@ export interface JurisInstance<TState = any> {
     : (path: string, callback: (newValue: any, oldValue: any, path: string) => void) => () => void;
 
   // NEW: Batch processing methods
-  reset(): void;
-  beginBatch(): void;
-  endBatch(): void;
-  executeBatch(callback: () => any): any;
-  isBatchingActive(): boolean;
-  getBatchQueueSize(): number;
-  clearBatch(): void;
   
   // Component management
   registerComponent: (name: string, component: JurisComponentFunction<TState>) => void;
@@ -1163,8 +2087,7 @@ export interface JurisInstance<TState = any> {
 
   // NEW: Extended component methods
   registerAndInitHeadless: (name: string, componentFn: any, options?: any) => any;
-  clearAsyncPropsCache: () => void;
-  getAsyncStats: () => ComponentAsyncStats;
+
   
   // Rendering
   render: (container?: string | HTMLElement) => void;
@@ -1172,10 +2095,6 @@ export interface JurisInstance<TState = any> {
   getRenderMode: () => string;
   isFineGrained: () => boolean;
   isBatchMode: () => boolean;
-
-  // NEW: DOM renderer extensions
-  clearAsyncCache: () => void;
-  getAsyncStats: () => DOMAsyncStats;
   
   // Enhancement
   enhance: (selector: string, definition: Enhancement, options?: EnhancementOptions) => () => void;
@@ -1200,7 +2119,7 @@ export interface JurisInstance<TState = any> {
 
 // Constructor interface
 export interface JurisConstructor {
-  new <TState = any>(config?: JurisConfig): JurisInstance<TState>;
+  new (config?: JurisConfig): JurisInstance<any>;
 }
 
 // Main Juris class export

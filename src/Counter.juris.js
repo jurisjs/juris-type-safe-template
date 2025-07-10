@@ -82,3 +82,26 @@ const Counter = (props, context) => {
 		}, //div.counter-component
 	};
 };
+
+import { Juris } from '@types';
+
+// Remove the stray slash and ensure Juris is available:
+const juris = new Juris();
+
+/**
+ * @param {Object} props
+ * @param {import('@types').JurisContextBase} context
+ * @returns {import('@types').JurisVDOMElement}
+ */
+const ComponentName = (props, context) => {
+	const { getState, setState } = context;
+
+	return {
+		div: {
+			className: 'container',
+			children: [
+
+			]
+		}, //div.container
+	};
+};

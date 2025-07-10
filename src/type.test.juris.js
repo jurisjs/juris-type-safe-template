@@ -581,3 +581,45 @@ export const DashboardExample = (props, context) => {
 		}
 	};
 };
+
+
+/**
+ * @param {Object} props
+ * @param {import('@types').JurisContext} context
+ * @returns {import('@types').JurisVDOMElement}
+ */
+export const App = (props, context) => {
+	const { getState, setState } = context;
+
+	return {
+		div: {
+			className: 'app',
+			children: [
+				// ✅ Full type safety and IntelliSense
+				{
+					UserCard: {
+						props: {
+							user: getState('currentUser'),
+							theme: 'dark',
+							onEdit: user => setState('editingUser', user)
+							// ❌ TypeScript error for invalid props
+						}
+					}
+				},
+
+				{
+					DataTable: {
+						props: {
+							data: getState('users', []),
+							columns: [
+								{ key: 'name', title: 'Name', sortable: true },
+								{ key: 'email', title: 'Email' }
+							],
+							onRowClick: row => console.log('Selected:', row)
+						}
+					}
+				}
+			]
+		}
+	};
+};

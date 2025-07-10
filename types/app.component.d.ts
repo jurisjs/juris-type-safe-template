@@ -66,7 +66,7 @@ declare global {
           showActions?: boolean;
           showAvatar?: boolean;
           size?: 'small' | 'medium' | 'large';
-          onEdit?: (user: User) => void;
+          onEsdit?: (user: User) => void;
           onDelete?: (userId: number) => void;
           onClick?: (user: User) => void;
           customActions?: Array<{
