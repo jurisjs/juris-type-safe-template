@@ -192,12 +192,19 @@ const SimpleRouter = (props, context) => {
 // ============================================================================
 // LAYOUT SYSTEM
 // ============================================================================
-
 /**
- * Layout Manager - Switches between different layouts
- * @param {Object} props
- * @param {import('@types').JurisContext} context
- * @returns {import('@types').JurisVDOMElement}
+ * @typedef {Object} LayoutManagerProps
+ * @property {Object.<string, Object>} layouts - Layout configurations
+ */
+/**
+ * LayoutManager Component
+ * @param {Object} props - Component props
+ * @param {Object} props.layouts - Layout configurations
+ * @param {Object} props.layouts.dashboard - Dashboard layout element
+ * @param {Object} props.layouts.profile - Profile layout element  
+ * @param {Object} props.layouts.settings - Settings layout element
+ * @param {Object} context - Juris context
+ * @returns {Object} VDOM element
  */
 const LayoutManager = (props, context) => {
 	const { getState } = context;
@@ -1155,7 +1162,6 @@ const SettingsPage = (props, context) => {
 // ============================================================================
 // MAIN APPLICATION
 // ============================================================================
-
 /**
  * Main Application Component
  * @param {Object} props
@@ -1183,12 +1189,14 @@ const App = (props, context) => {
 			className: () => `app app-theme-${getState('app.theme', 'light')}`,
 			children: [
 				{
+					/** @type {import('@app-comp').ComponentUsage<LayoutManagerProps>} */
 					LayoutManager: {
 						layouts: {
 							dashboard: {
+								/** @type {import('@app-comp').DashboardLayoutProps} */
 								DashboardLayout: {
 									children: () => [
-										{ RouterOutlet: {} }
+										{ RouterOutlet: {} },
 									]
 								}
 							},
