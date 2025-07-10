@@ -10,18 +10,17 @@ import { ComponentElement, JurisVDOMElement, ReactiveValue } from './index';
 
 declare global {
   namespace Juris {
-    interface RegisteredComponents {
-      
+    interface RegisteredComponents {      
       // 1. LAYOUT & ROUTING COMPONENTS
       LayoutManager: { 
-        props: { 
-          layouts: { [layoutName: string]: ComponentElement }
-        } 
+        props: {
+          layouts: Record<string, any>; // Or be more specific with layout names
+        }
       };
       
       DashboardLayout: { 
         props: {
-          sidebar?: boolean;
+          children?: ReactiveValue<Element[]>| ComponentElement;
           theme?: 'light' | 'dark';
         }
       };
@@ -600,29 +599,17 @@ declare global {
   }
 }
 
-// Type aliases for easier usage
-export type User = {
-  id: number;
-  name: string;
-  email: string;
-  role: 'Admin' | 'Moderator' | 'User';
-  status: 'Active' | 'Inactive';
-  avatar?: string;
-  createdAt?: Date | string;
-  lastLoginAt?: Date | string;
-};
+export type ComponentMap = Juris.RegisteredComponents;
 
-export type UserFormData = {
-  name: string;
-  email: string;
-  role: 'Admin' | 'Moderator' | 'User';
-  status: 'Active' | 'Inactive';
-  password?: string;
-};
+export type LayoutManagerProps = Juris.RegisteredComponents['LayoutManager']['props'];
+export type DashboardLayoutProps = Juris.RegisteredComponents['DashboardLayout']['props']
+export type RouterOutletProps = Juris.RegisteredComponents['RouterOutlet']['props']
+export type UserFormProps = Juris.RegisteredComponents['UserForm']['props'];
+export type DataTableProps = Juris.RegisteredComponents['DataTable']['props'];
+export type ModalProps = Juris.RegisteredComponents['Modal']['props'];
 
-export type UserFilters = {
-  role: 'Admin' | 'Moderator' | 'User' | 'all';
-  status: 'Active' | 'Inactive' | 'all';
-  search?: string;
-  dateRange?: [Date, Date];
+export type ModalProps = Juris.RegisteredComponents['Modal']['props'];
+
+export type ComponentUsage<T extends ComponentNames> = {
+  [K in T]: Juris.RegisteredComponents[K]['props']
 };

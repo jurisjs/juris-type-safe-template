@@ -10,7 +10,8 @@
         "paths": {
             "@types": ["./types/index.d.ts"],
             "@types/*": ["./types/*"],
-            "@app-states": ["types/app.states.d.ts"]
+            "@app-states": ["types/app.states.d.ts"],
+            "@app-comp": ["types/app.components.d.ts"]
         }
     },
     "include": ["**/*.js", "**/*.ts", "**/*.d.ts", "types/**/*"],
