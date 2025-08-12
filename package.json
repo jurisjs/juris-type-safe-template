@@ -2,5 +2,8 @@
   "imports": {
     "#types": "./types/index.d.ts",
     "#types/*": "./types/*"
+  },
+  "dependencies": {
+    "@jurisjs/juris": "^0.88.2-test1"
   }
 }

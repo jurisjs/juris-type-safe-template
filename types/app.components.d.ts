@@ -6,16 +6,56 @@
  * Components registered here are part of Juris demo components, feel free to delete or study theme
  */
 
-import { ComponentElement, JurisVDOMElement, ReactiveValue } from './index';
+import type { ComponentElement, ReactiveValue } from './index';
+// Add these interface definitions at the top after the imports:
+interface User {
+  id: number;
+  name: string;
+  email: string;
+  role: string;
+  avatar?: string;
+  permissions?: string[];
+}
+
+interface UserFormData {
+  name: string;
+  email: string;
+  role: string;
+  password?: string;
+}
+
+interface UserFilters {
+  role?: string[];
+  status?: 'active' | 'inactive';
+  dateRange?: [Date, Date];
+}
+
+// Add this missing type that's referenced but not defined:
+type ComponentNames = keyof Juris.RegisteredComponents;
 
 declare global {
   namespace Juris {
     interface RegisteredComponents {      
       // 1. LAYOUT & ROUTING COMPONENTS
-      LayoutManager: { 
-        props: {
-          layouts: Record<string, any>; // Or be more specific with layout names
-        }
+     LayoutManager: {
+        layouts: {
+          dashboard?: {
+            sidebar?: boolean;
+            header?: boolean;
+            footer?: boolean;
+            theme?: 'light' | 'dark';
+            width?: number;
+          };
+          auth?: {
+            centered?: boolean;
+            background?: string;
+            logo?: boolean;
+          };
+          admin?: {
+            navigation?: 'sidebar' | 'tabs' | 'breadcrumb';
+            permissions?: string[];
+          };
+        };
       };
       
       DashboardLayout: { 
@@ -59,13 +99,12 @@ declare global {
       };
 
       UserCard: {
-        props: {
           user: User;
           theme?: 'light' | 'dark' | 'compact';
           showActions?: boolean;
           showAvatar?: boolean;
           size?: 'small' | 'medium' | 'large';
-          onEsdit?: (user: User) => void;
+          onEdit?: (user: User) => void; // Fixed typo from onEsdit
           onDelete?: (userId: number) => void;
           onClick?: (user: User) => void;
           customActions?: Array<{
@@ -74,7 +113,6 @@ declare global {
             action: (user: User) => void;
             variant?: 'primary' | 'secondary' | 'danger';
           }>;
-        };
       };
 
       UserList: {
@@ -600,16 +638,11 @@ declare global {
 }
 
 export type ComponentMap = Juris.RegisteredComponents;
-
 export type LayoutManagerProps = Juris.RegisteredComponents['LayoutManager']['props'];
-export type DashboardLayoutProps = Juris.RegisteredComponents['DashboardLayout']['props']
-export type RouterOutletProps = Juris.RegisteredComponents['RouterOutlet']['props']
-export type UserFormProps = Juris.RegisteredComponents['UserForm']['props'];
-export type DataTableProps = Juris.RegisteredComponents['DataTable']['props'];
-export type ModalProps = Juris.RegisteredComponents['Modal']['props'];
+export type UserCard = Juris.RegisteredComponents['UserCard'];
+export type ModalProps = Juris.RegisteredComponents['Modal'];
+export type UserFormProps = Juris.RegisteredComponents['UserForm'];
+export type DashboardLayoutProps = Juris.RegisteredComponents['DashboardLayout']
+export type RouterOutletProps = Juris.RegisteredComponents['RouterOutlet']
+export type DataTableProps = Juris.RegisteredComponents['DataTable']
 
-export type ModalProps = Juris.RegisteredComponents['Modal']['props'];
-
-export type ComponentUsage<T extends ComponentNames> = {
-  [K in T]: Juris.RegisteredComponents[K]['props']
-};

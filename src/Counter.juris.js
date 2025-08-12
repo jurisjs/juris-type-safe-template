@@ -78,6 +78,11 @@ const Counter = (props, context) => {
 					}
 				}, //button
 				...(showReset ? [{ button: { text: 'Reset', onClick: reset } }] : []), //button
+				{
+					div: {
+						text: ''
+					}
+				}
 			]
 		}, //div.counter-component
 	};

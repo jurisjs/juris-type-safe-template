@@ -1,7 +1,15 @@
+
+import Juris from '../node_modules/@jurisjs/juris/juris.mjs';
 // ============================================================================
 // SIMPLE ROUTER HEADLESS COMPONENT
 // ============================================================================
-
+/**
+ * @param {Object} props - Router configuration
+ * @param {boolean} [props.autoInit] - Auto-initialize the router
+ * @param {string} [props.basePath] - Base path for routing
+ * @param {import('@types').JurisContext} context - Juris context
+ * @returns {import('@types').HeadlessComponent}  // ← Change this line!
+ */
 const SimpleRouter = (props, context) => {
 	const { setState, getState, juris } = context;
 
@@ -1189,34 +1197,11 @@ const App = (props, context) => {
 			className: () => `app app-theme-${getState('app.theme', 'light')}`,
 			children: [
 				{
-					/** @type {import('@app-comp').ComponentUsage<LayoutManagerProps>} */
+					/** @type {import('@app-comp')<LayoutManagerProps>} */
 					LayoutManager: {
-						layouts: {
-							dashboard: {
-								/** @type {import('@app-comp').DashboardLayoutProps} */
-								DashboardLayout: {
-									children: () => [
-										{ RouterOutlet: {} },
-									]
-								}
-							},
-							minimal: {
-								div: {
-									className: 'minimal-layout',
-									children: [
-										{ h1: { text: 'Minimal Layout' } },
-										{ RouterOutlet: {} }
-									]
-								}
-							},
-							mobile: {
-								div: {
-									className: 'mobile-layout',
-									children: [
-										{ h1: { text: 'Mobile Layout' } },
-										{ RouterOutlet: {} }
-									]
-								}
+						props:{
+							layout:{
+								DashboardLayout:{}
 							}
 						}
 					}
@@ -1225,12 +1210,39 @@ const App = (props, context) => {
 		}
 	};
 };
-
+/**
+ * @typedef {Object} AppState
+ * @property {Object} app
+ * @property {'dashboard'|'settings'|'profile'} app.layout
+ * @property {'light'|'dark'} app.theme
+ * @property {boolean} app.initialized
+ * 
+ * @property {Object} route
+ * @property {string} route.current
+ * @property {string} route.path
+ * @property {Record<string, string>} route.params
+ * @property {Record<string, string>} route.query
+ * 
+ * @property {Object} users
+ * @property {Array<{id: string, name: string, email: string, role: string, status: string}>} users.list
+ * @property {string} users.search
+ * @property {Object} users.filter
+ * @property {'all'|'admin'|'user'|'moderator'} users.filter.role
+ * @property {'all'|'active'|'inactive'|'pending'} users.filter.status
+ * 
+ * @property {Object} userForm
+ * @property {boolean} userForm.initialized
+ * 
+ * @property {Object} auth
+ * @property {Object} auth.user
+ * @property {string} auth.user.name
+ * @property {'Admin'|'User'|'Moderator'} auth.user.role
+ */
 // ============================================================================
 // APPLICATION SETUP
 // ============================================================================
 
-// @ts-ignore
+
 const juris = new Juris({
 	states: {
 		app: {

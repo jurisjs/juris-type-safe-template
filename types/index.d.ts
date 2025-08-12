@@ -33,6 +33,21 @@ type SmartEventHandler<E = Event> = ((event: E) => void | Promise<void>);
 // Helper type for reactive values that can be sync, async, or functions returning either
 type ReactiveValue<T> = T | (() => AsyncCapable<T>) | Promise<T>;
 
+export type AsyncPlaceholderType = 
+  | 'async-loading'
+  | 'async-props-loading' 
+  | 'async-lifecycle'
+  | 'async-children'
+  | 'async-text'
+  | 'async-style'
+  | 'async-error';
+
+export interface AsyncPlaceholderMetadata {
+  type: AsyncPlaceholderType;
+  elementId?: string;
+  componentName?: string;
+  timestamp: number;
+}
 type ComponentRegistrationError<T extends string> = 
   `❌ Component '${T}' not registered. Add to app.component.d.ts RegisteredComponents interface.`;
 
@@ -74,6 +89,13 @@ export interface JurisFocusEventWithTarget<T extends HTMLElement = HTMLElement> 
 export interface DynamicElement extends BaseElementProps {
     [componentName: string]: any;
 }
+
+export interface PlaceholderStats {
+  configuredElements: number;
+  activeAsyncOperations: number;
+  cachedConfigurations: number;
+}
+
 // Framework configuration interfaces
 export interface JurisConfig {
   logLevel?: 'debug' | 'info' | 'warn' | 'error';
@@ -86,6 +108,8 @@ export interface JurisConfig {
   renderMode?: 'fine-grained' | 'batch' | 'auto';
   autoCompileTemplates?: boolean;
   templateObserver?: TemplateObserverConfig;
+  defaultPlaceholder?: PlaceholderConfig;
+  placeholders?: Record<string, PlaceholderConfig>;
 }
 
 export interface TemplateObserverConfig {
@@ -99,9 +123,13 @@ export interface MiddlewareContext {
   context: any;
   state: any;
 }
+export type HeadlessComponentFunction<TState = any> = (
+  props: Record<string, any>,
+  context: JurisContext<TState>
+) => HeadlessComponent;
 
 export interface HeadlessComponentConfig {
-  fn: JurisComponentFunction;
+  fn: HeadlessComponentFunction;  // ← Change from: fn: JurisComponentFunction;
   options?: HeadlessComponentOptions;
 }
 
@@ -137,6 +165,7 @@ export interface EnhancementStats {
   enhancedContainers: number;
   enhancedSelectors: number;
   totalEnhanced: number;
+  placeholderStats?: PlaceholderStats;
 }
 
 // Logger interface
@@ -1898,7 +1927,18 @@ export type ValidateComponent<T> = ValidateComponentElement<T>;
 export type ComponentValidationError<T extends string> = ComponentRegistrationError<T>;
 
 // Export the main types from the namespace with proper typing
-export type JurisVDOMElement = JurisVDOM.Element;
+export type JurisVDOMElement = 
+  | JurisVDOM.Element
+  | (keyof Juris.RegisteredComponents extends never 
+      ? never 
+      : {
+          [K in keyof Juris.RegisteredComponents]: {
+            [P in K]: Juris.RegisteredComponents[K] & {
+              children?: ReactiveValue<JurisVDOMElement[]>;
+              key?: string | number;
+            }
+          }
+        }[keyof Juris.RegisteredComponents]);
 export type JurisElementOptions = JurisVDOM.ElementOptions;
 
 // Also export individual element types for advanced usage
@@ -1969,6 +2009,7 @@ interface JurisContextCore extends ComponentState<any> {
     isBatchMode: () => boolean;
     getHeadlessStatus: () => HeadlessStatus;
   };
+  setupIndicators?: (elementId: string, config: PlaceholderConfig) => void;
   juris?: any;
   logger?: JurisLogger;
 }
@@ -2005,7 +2046,13 @@ export interface JurisContextBase extends JurisContextCore {
 export type JurisComponentFunction<TState = any> = (
   props: Record<string, any>,
   context: JurisContext<TState>
-) => JurisVDOMElement | { render: () => AsyncCapable<JurisVDOMElement> };
+) => JurisVDOMElement | { 
+  render: () => AsyncCapable<JurisVDOMElement>;
+  // ADD: Optional placeholder indicator
+  indicator?: JurisVDOMElement;
+  hooks?: ComponentHooks;
+  api?: Record<string, any>;
+};
 
 // Lifecycle hooks with smart async support
 export interface ComponentHooks {
@@ -2031,7 +2078,7 @@ export interface HeadlessComponent {
 }
 
 // Juris framework instance with better state management typing and all missing methods
-export interface JurisInstance<TState = any> {
+export interface JurisInstance<TState = {}> {
   // State management with better type support
   getState: TState extends Record<string, any>
     ? {
@@ -2088,6 +2135,7 @@ export interface JurisInstance<TState = any> {
   // NEW: Extended component methods
   registerAndInitHeadless: (name: string, componentFn: any, options?: any) => any;
 
+  setupIndicators: (elementId: string, config: PlaceholderConfig) => void;
   
   // Rendering
   render: (container?: string | HTMLElement) => void;
@@ -2149,6 +2197,7 @@ declare global {
         ComponentFunction: string;
         Instance: string;
         Config: string;
+        PlaceholderConfig: string;
       };
     };
     JurisTypeHelpers: {
@@ -2157,6 +2206,8 @@ declare global {
       isReactive(value: any): boolean;
       isPromise(value: any): value is Promise<any>;
       isAsyncCapable(value: any): boolean;
+      isPlaceholderConfig(value: any): value is PlaceholderConfig;
+      isAsyncPlaceholder(element: HTMLElement): boolean;
     };
     deepEquals: (a: any, b: any) => boolean;
     jurisVersion: string;
@@ -2183,7 +2234,17 @@ declare global {
       : { [K in keyof RegisteredComponents]: ComponentElement & RegisteredComponents[K] };
   }
 }
+export interface PlaceholderConfig {
+  className?: string;
+  style?: string;
+  text?: string;
+  children?: ReactiveValue<JurisVDOMElement[]> | null;
+}
 
+export interface PlaceholderSystemOptions {
+  defaultPlaceholder?: PlaceholderConfig;
+  placeholders?: Record<string, PlaceholderConfig>;
+}
 export type JurisComponentDefinition = Juris.ComponentDefinition;
 // Export everything for Juris Object VDOM IntelliSense
 export {
@@ -2223,7 +2284,6 @@ export {
   MiddlewareContext,
   HeadlessComponentConfig,
   HeadlessComponentOptions,
-
   // Statistics and status interfaces
   ComponentAsyncStats,
   DOMAsyncStats,
@@ -2257,5 +2317,11 @@ export {
   JurisVideoElement,
   JurisAudioElement,
   JurisTableElement,
-  JurisFormElement
+  JurisFormElement,
+  
+  PlaceholderConfig,
+  PlaceholderSystemOptions,
+  PlaceholderStats,
+  AsyncPlaceholderType,
+  AsyncPlaceholderMetadata
 };

@@ -127,6 +127,7 @@
  * @typedef {import('./types').HeadlessComponent} HeadlessComponent
  * @typedef {import('./types').HeadlessComponentConfig} HeadlessComponentConfig
  * @typedef {import('./types').HeadlessComponentOptions} HeadlessComponentOptions
+ * @typedef {import('./types').HeadlessComponentFunction} HeadlessComponentFunction
  */
 
 // =============================================================================

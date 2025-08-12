@@ -68,3 +68,9 @@ export interface UsersState {
     search: string;
     filter: UserFilters;
 }
+import { User } from './app.components.d.ts';
+
+export interface AppState {
+  currentUser: User;
+  editingUser: User | null;
+}

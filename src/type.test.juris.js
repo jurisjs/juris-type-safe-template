@@ -16,32 +16,19 @@ export const ComprehensiveApp = (props, context) => {
 				// 1. LAYOUT EXAMPLES
 				{
 					LayoutManager: {
-						props: {
-							layouts: {
-								dashboard: {
-									DashboardLayout: {
-										props: {
-											sidebar: true,
-											theme: getState('app.theme', 'light')
-										},
-										children: [
-											{ RouterOutlet: {} }
-										]
-									}
-								},
-								mobile: {
-									div: {
-										className: 'mobile-layout',
-										children: [
-											{ RouterOutlet: { props: { transition: 'slide' } } }
-										]
-									}
-								}
+						layouts: {
+							dashboard: {
+								sidebar: true,        // ✅ Auto-complete
+								theme: 'dark',        // ✅ Auto-complete with 'light' | 'dark'
+								width: 300            // ✅ Auto-complete
+							},
+							auth: {
+								centered: true,       // ✅ Auto-complete
+								background: '#fff'    // ✅ Auto-complete
 							}
 						}
 					}
 				},
-
 				// 2. USER MANAGEMENT EXAMPLES
 				{
 					UserList: {
@@ -584,11 +571,11 @@ export const DashboardExample = (props, context) => {
 
 
 /**
- * @param {Object} props
+ * @param {Object} propss
  * @param {import('@types').JurisContext} context
  * @returns {import('@types').JurisVDOMElement}
  */
-export const App = (props, context) => {
+export const App = (propss, context) => {
 	const { getState, setState } = context;
 
 	return {
